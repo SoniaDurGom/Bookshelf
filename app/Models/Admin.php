@@ -5,7 +5,12 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Persona extends Model
+class Admin extends Model
 {
     use HasFactory;
+    protected $table = 'perfiles';
+    protected $fillable = [
+        'perfil_id',
+        
+    ];
 }

@@ -97,6 +97,11 @@ div.col {
 .footer{
     background-color: #00adb5;
     height: 100px;
+    margin-top: auto;
+    /* position: absolute;
+    
+    bottom: 0;
+    width: 100%; */
 }
 
 
@@ -104,6 +109,9 @@ div.col {
 
     body {
         background-color: #fff9f3 !important;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
     }
 
   #login .container #login-row #login-column #login-box {
@@ -147,4 +155,58 @@ div.col {
 
 
 
+/* FORMULARIO INICIO */
   
+  .card {
+    background-color: #fff !important;
+    border-radius: 10px;
+    box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+    padding: 20px;
+  }
+  
+  .card-header {
+    background-color: #00adb5 !important;
+    color: #fff !important;
+    font-size: 24px;
+    font-weight: bold;
+    padding: 10px;
+    text-align: center;
+    border-radius: 10px 10px 0 0;
+  }
+  
+  .form-control {
+    border-radius: 5px;
+    border-color: #007c82 !important;
+  }
+  
+  .form-check-input:checked {
+    background-color: #007c82 !important;
+  }
+  
+  .form-check-label {
+    color: #007c82 !important;
+  }
+  
+  .btn-primary {
+    background-color: #00adb5 !important;
+    border-color: #00adb5 !important;
+  }
+  
+  .btn-primary:hover {
+    background-color: #007c82 !important;
+    border-color: #007c82 !important;
+  }
+  
+  .btn-link {
+    color: #007c82 !important;
+  }
+  
+  .invalid-feedback {
+    color: #dc3545 !important;
+  }
+  
+  .col-form-label {
+    color: #007c82 !important;
+    font-weight: bold;
+  }
+

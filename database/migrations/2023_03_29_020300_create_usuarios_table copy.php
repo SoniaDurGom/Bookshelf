@@ -13,8 +13,11 @@ return new class extends Migration
     {
         Schema::create('usuarios', function (Blueprint $table) {
             $table->id();
+            $table->unsignedBigInteger('id_perfil');
+            $table->foreign('id_perfil')->references('id')->on('perfiles');
             $table->timestamps();
         });
+        
     }
 
     /**

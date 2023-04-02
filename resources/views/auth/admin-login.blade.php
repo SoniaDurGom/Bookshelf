@@ -1,32 +1,22 @@
-@extends('layouts.app')
 
-@section('content')
+<link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}">
+<link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}">
+<link rel="stylesheet" href="{{ asset('css/style.css') }}">
+
+<link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
+    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/js/bootstrap.min.js" integrity="sha384-heAjqF+bCxXpCWLa6Zhcp4fu20XoNIA98ecBC1YkdXhszjoejr5y9Q77hIrv8R9i" crossorigin="anonymous"></script>
 
 
-
-<div class="container-fluid">
-    <div class="row ">
-        <div class="col-md-3 m-2">
-            <div>
-                <h3>Titulo</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat optio dolores delectus?</p>
-            </div>
-        </div>
-
-        <div class="col-md-3 m-2">
-            <div>
-                <h3>Titulo</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat optio dolores delectus?</p>
-            </div>
-        </div>
-
+    <wbr>
+    <div class="container-fluid d-flex justify-content-center">
 
             <div class="col-md-5">
                 <div class="card">
-                    <div class="card-header">{{ __('Iniciar sesion') }}</div>
+                    <div class="card-header">{{ __('ADMINISTRACIÓN') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ route('admin.login') }}">
                             @csrf
 
                             <div class="row mb-3">
@@ -88,6 +78,7 @@
             </div>
         </div>
     </div>
+    
 
 
 </div>
@@ -96,5 +87,3 @@
 
 
 
-
-@endsection
