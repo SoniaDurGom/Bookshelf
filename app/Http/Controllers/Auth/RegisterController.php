@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Auth;
 
 use App\Http\Controllers\Controller;
+use App\Models\Lector;
 use App\Models\Perfil;
 use App\Models\Usuario;
 use App\Providers\RouteServiceProvider;
@@ -11,7 +12,7 @@ use Illuminate\Foundation\Auth\RegistersUsers;
 use Illuminate\Support\Facades\Hash;
 use Illuminate\Support\Facades\Validator;
 use Illuminate\Support\Facades\DB;
-
+use Illuminate\Validation\Rule;
 class RegisterController extends Controller
 {
     /*
@@ -53,11 +54,15 @@ class RegisterController extends Controller
     protected function validator(array $data)
     {
         return Validator::make($data, [
-            'name' => ['required', 'string', 'max:255'],
+            'nombre' => ['required', 'string', 'max:255'],
             'email' => ['required', 'string', 'email', 'max:255', 'unique:perfiles'],
             'password' => ['required', 'string', 'min:8', 'confirmed'],
-        ]);
+            // 'perfil' => ['required', 'string', Rule::in(['autor', 'usuario'])],
+            ]);
     }
+
+
+
 
     /**
      * Create a new user instance after a valid registration.
@@ -67,32 +72,25 @@ class RegisterController extends Controller
      */
     protected function create(array $data)
     {
-        // return Perfil::create([
-        //     'name' => $data['name'],
-        //     'email' => $data['email'],
-        //     'password' => Hash::make($data['password']),
-        // ]);
-        DB::beginTransaction();
+        $perfil = Perfil::create([
+            'nombre' => $data['nombre'],
+            'email' => $data['email'],
+            'password' => Hash::make($data['password']),
+        ]);
+    
+        // if ($data['perfil'] == 'autor') {
+        //     $perfil->autor()->create([
+        //         'biografia' => '',
+        //     ]);
+        // } else {
+        //     $perfil->usuario()->create();
+        // }
 
-        try {
-            $perfil = Perfil::create([
-                'name' => $data['name'],
-                'email' => $data['email'],
-                'password' => Hash::make($data['password']),
-                // 'tipo_perfil' => $data['tipo_perfil'],
-            ]);
-
-            Usuario::create([
-                'perfil_id' => $perfil->id,
-            ]);
-
-            DB::commit();
-
-            return $perfil;
-        } catch (\Exception $e) {
-            DB::rollback();
-            throw $e;
-        }
-
-        }
+        $usuario = new Lector();
+        $usuario->perfil()->associate($perfil);
+        $usuario->save();
+    
+        return $perfil;
+    }
+    
 }

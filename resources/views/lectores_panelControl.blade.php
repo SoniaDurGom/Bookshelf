@@ -16,7 +16,7 @@
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">{{ __('Panel personal de ') }}  {{ Auth::user()->name }}</div>
+                        <div class="card-header">{{ __('Panel personal de ') }}  {{ $nombre }}</div>
 
                         <div class="card-body">
                             @if (session('status'))
@@ -25,7 +25,7 @@
                                 </div>
                             @endif
 
-                            {{ __('¡Bienvenid@! USUARIO') }}
+                            {{ __('¡Bienvenid@!') }} {{ $nombre }}
                         </div>
                     </div>
                 </div>

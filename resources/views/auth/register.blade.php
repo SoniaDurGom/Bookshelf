@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.layout2')
 
 @section('content')
 <div class="container">
@@ -8,7 +8,7 @@
                 <div class="card-header">{{ __('Registro') }}</div>
 
                 <div class="card-body">
-                    <form method="POST" action="{{ route('register') }}">
+                    <form method="POST" action="{{ route('lectores.guardar') }}">
                         @csrf
 
                         <div class="row mb-3">
@@ -53,13 +53,40 @@
                             </div>
                         </div>
 
-                        <div class="row mb-3">
+                         <div class="row mb-3">
                             <label for="password-confirm" class="col-md-4 col-form-label text-md-end">{{ __('Confirmar contraseña') }}</label>
 
                             <div class="col-md-6">
                                 <input id="password-confirm" type="password" class="form-control" name="password_confirmation" required autocomplete="new-password">
                             </div>
                         </div>
+
+                        
+
+                        {{-- <div class="row mb-3">
+                            <label for="perfil" class="col-md-4 col-form-label text-md-end">{{ __('Perfil') }}</label>
+                        
+                            <div class="col-md-6">
+                                <select id="perfil" class="form-control @error('perfil') is-invalid @enderror" name="perfil" value="{{ old('perfil') }}" required autocomplete="perfil" autofocus>
+                                    <option value="usuario">Lector</option>
+                                    <option value="autor">Autor</option>
+                                </select>
+                        
+                                @error('perfil')
+                                    <span class="invalid-feedback" role="alert">
+                                        <strong>{{ $message }}</strong>
+                                    </span>
+                                @enderror
+                            </div>
+                        </div> --}}
+                        
+                        
+
+
+
+
+
+
 
                         <div class="row mb-0">
                             <div class="col-md-6 offset-md-4">

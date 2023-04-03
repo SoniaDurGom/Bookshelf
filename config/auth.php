@@ -41,10 +41,23 @@ return [
             'provider' => 'users',
         ],
     
-        'admin' => [
+        'administradores' => [
             'driver' => 'session',
-            'provider' => 'admins',
+            'provider' => 'administradores',
         ],
+    
+        'autores' => [
+            'driver' => 'session',
+            'provider' => 'autores',
+        ],
+
+        'lector' => [
+            'driver' => 'session',
+            'provider' => 'lectores',
+        ],
+
+        
+        
     ],
     
     
@@ -72,9 +85,20 @@ return [
             'model' => App\Models\Perfil::class,
         ],
     
-        'admins' => [
+        'administradores' => [
             'driver' => 'eloquent',
-            'model' => App\Models\Admin::class,
+            'model' => App\Models\Administrador::class,
+        ],
+
+    
+        'autores' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Autor::class,
+        ],
+
+        'lectores' => [
+            'driver' => 'eloquent',
+            'model' => App\Models\Lector::class,
         ],
     ],
     

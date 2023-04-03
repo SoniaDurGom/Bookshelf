@@ -13,11 +13,10 @@ return new class extends Migration
     {
         Schema::create('administradores', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_perfil');
-            $table->foreign('id_perfil')->references('id')->on('perfiles');
+            $table->unsignedBigInteger('perfil_id');
+            $table->foreign('perfil_id')->references('id')->on('perfiles')->onDelete('cascade');
             $table->timestamps();
         });
-        
     }
 
     /**

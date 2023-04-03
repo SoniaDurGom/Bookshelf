@@ -1,4 +1,4 @@
-@extends('layouts.app')
+@extends('layouts.layout2')
 
 @section('content')
 
@@ -6,19 +6,40 @@
 
 <div class="container-fluid">
     <div class="row ">
-        <div class="col-md-3 m-2">
-            <div>
-                <h3>Titulo</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat optio dolores delectus?</p>
-            </div>
-        </div>
+        
+        
+            <div class="col-md-3 m-2" >
+                
+                <div>
+                    <h5>¿Aún no sabes que leer?</h5>
+                    <p>No te preocupes, aquí encontrarás numerosas recomendaciones en función de tus gustos</p>
+                </div>
 
-        <div class="col-md-3 m-2">
-            <div>
-                <h3>Titulo</h3>
-                <p>Lorem ipsum dolor sit amet, consectetur adipisicing elit. Placeat optio dolores delectus?</p>
+                <wbr>
+
+                <div>
+                    <h5>¿Buscas un libro?</h5>
+                    <p>Consulta los datos de una gran cantidad de libros en segundos desde cualquier lugar</p>
+                </div>
             </div>
-        </div>
+
+            <div class="col-md-3 m-2">
+                <div>
+                    <h5>¿Quieres un registro de tus lecturas?</h5>
+                    <p>Encuentra, ordena y valora tu libreria personal más fácilmente que nunca.</p>
+                </div>
+
+                <wbr>
+
+                <div>
+                    <h5>¿Eres escritor?</h5>
+                    <p>Si buscas un sitio en el que dar a conocer tu obra y una plataforma con la que poder interactuar con tus lectores ya la has encontrado.
+                        <a href="{{ route('autores.registro.formulario') }}">
+                            {{ __('¿Te unes?') }}
+                        </a>
+                    </p>
+                </div>
+            </div>
 
 
             <div class="col-md-5">
@@ -26,7 +47,7 @@
                     <div class="card-header">{{ __('Iniciar sesion') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('login') }}">
+                        <form method="POST" action="{{ route('lectores.login') }}">
                             @csrf
 
                             <div class="row mb-3">

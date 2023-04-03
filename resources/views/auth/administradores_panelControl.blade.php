@@ -9,23 +9,15 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
-    @extends('layouts.app')
+    @extends('layouts.layout2')
 
     @section('content')
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">{{ __('Panel personal de ') }}  {{ Auth::user()->name }}</div>
-
-                        <div class="card-body">
-                            @if (session('status'))
-                                <div class="alert alert-success" role="alert">
-                                    {{ session('status') }}
-                                </div>
-                            @endif
-
-                            {{ __('¡Bienvenid@! USUARIO') }}
+                        <div class="card-header">{{ __('Panel personal de ') }}  {{ $nombre }}</div>
+                            {{ __('¡Bienvenid@ admin!') }}
                         </div>
                     </div>
                 </div>
@@ -36,3 +28,5 @@
     
 </body>
 </html>
+
+

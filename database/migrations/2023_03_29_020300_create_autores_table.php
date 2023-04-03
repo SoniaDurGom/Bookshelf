@@ -11,13 +11,23 @@ return new class extends Migration
      */
     public function up(): void
     {
+        // Schema::create('autores', function (Blueprint $table) {
+        //     $table->id();
+        //     $table->unsignedBigInteger('id_perfil');
+        //     $table->foreign('id_perfil')->references('id')->on('perfiles')->onDelete('cascade'); //onDelete borra las lineas de las tablas que tengan esta referencia cuando se borre
+        //     $table->text('biografia')->nullable();
+        //     $table->timestamps();
+        // });
         Schema::create('autores', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('id_perfil');
-            $table->foreign('id_perfil')->references('id')->on('perfiles');
-            $table->string('biografia');
+            $table->unsignedBigInteger('perfil_id');
+            $table->text('biografia')->nullable();
+            $table->boolean('aprobado')->default(false);
             $table->timestamps();
+        
+            $table->foreign('perfil_id')->references('id')->on('perfiles');
         });
+        
         
     }
 

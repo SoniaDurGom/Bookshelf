@@ -42,4 +42,23 @@ class Perfil extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+
+
+    public function autor()
+    {
+        return $this->hasOne(Autor::class);
+    }
+
+    public function administrador()
+    {
+        return $this->hasOne(Administrador::class);
+    }
+    
+    public function lector()
+    {
+        return $this->hasOne(Lector::class);
+    }
+   
+
+
 }

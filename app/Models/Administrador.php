@@ -5,16 +5,15 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Autor extends Model
+use Illuminate\Foundation\Auth\User as Authenticatable;
+class Administrador extends Authenticatable
 {
     use HasFactory;
 
-    protected $table = 'autores';
+    protected $table = 'administradores';
 
     protected $fillable = [
         'perfil_id',
-        'biografia',
-        'aprobado',
     ];
 
     public function perfil()
