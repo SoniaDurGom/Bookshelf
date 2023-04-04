@@ -25,7 +25,8 @@ return new class extends Migration
             $table->boolean('aprobado')->default(false);
             $table->timestamps();
         
-            $table->foreign('perfil_id')->references('id')->on('perfiles');
+            // $table->foreign('perfil_id')->references('id')->on('perfiles');
+            $table->foreign('perfil_id')->references('id')->on('perfiles')->onDelete('cascade');
         });
         
         

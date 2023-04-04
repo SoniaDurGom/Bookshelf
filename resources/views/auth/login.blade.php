@@ -4,50 +4,15 @@
 
 
 
-<div class="container-fluid">
-    <div class="row ">
-        
-        
-            <div class="col-md-3 m-2" >
-                
-                <div>
-                    <h5>¿Aún no sabes que leer?</h5>
-                    <p>No te preocupes, aquí encontrarás numerosas recomendaciones en función de tus gustos</p>
-                </div>
-
-                <wbr>
-
-                <div>
-                    <h5>¿Buscas un libro?</h5>
-                    <p>Consulta los datos de una gran cantidad de libros en segundos desde cualquier lugar</p>
-                </div>
-            </div>
-
-            <div class="col-md-3 m-2">
-                <div>
-                    <h5>¿Quieres un registro de tus lecturas?</h5>
-                    <p>Encuentra, ordena y valora tu libreria personal más fácilmente que nunca.</p>
-                </div>
-
-                <wbr>
-
-                <div>
-                    <h5>¿Eres escritor?</h5>
-                    <p>Si buscas un sitio en el que dar a conocer tu obra y una plataforma con la que poder interactuar con tus lectores ya la has encontrado.
-                        <a href="{{ route('autores.registro.formulario') }}">
-                            {{ __('¿Te unes?') }}
-                        </a>
-                    </p>
-                </div>
-            </div>
-
-
-            <div class="col-md-5">
+<div class="container-fluid " style=" position: relative;  ">
+    <img class="d-none d-md-block" src="{{ asset('/imgInicio.PNG') }}" alt="imagen" style="width:100%; height:300px; position: absolute; z-index: -1; left: 0;">
+    <div class="row justify-content-end" style="z-index: 1;">
+            <div class="col-xl-5 col-md-6 col-md-7 order-md-2 mt-5">
                 <div class="card">
                     <div class="card-header">{{ __('Iniciar sesion') }}</div>
 
                     <div class="card-body">
-                        <form method="POST" action="{{ route('lectores.login') }}">
+                        <form method="POST" action="{{ route('index.login') }}">
                             @csrf
 
                             <div class="row mb-3">
@@ -61,6 +26,8 @@
                                             <strong>{{ $message }}</strong>
                                         </span>
                                     @enderror
+                                    
+
                                 </div>
                             </div>
 
@@ -108,6 +75,37 @@
                 </div>
             </div>
         </div>
+
+
+        <wbr>
+            
+        <div class="row" style="z-index: 1;">
+        
+            <div class="col-md-3 m-2" >
+                <div>
+                    <h5>¿Quieres un registro de tus lecturas?</h5>
+                    <p>Encuentra, ordena y valora tu libreria personal más fácilmente que nunca.</p>
+                </div>
+            </div>
+
+            <div class="col-md-3 m-2">
+
+                <div>
+                    <h5>¿Eres escritor?</h5>
+                    <p>Si buscas un sitio en el que dar a conocer tu obra y una plataforma con la que poder interactuar con tus lectores ya la has encontrado.
+                        <a href="{{ route('autores.login') }}">
+                            {{ __('¿Te unes?') }}
+                        </a>
+                    </p>
+                </div>
+            </div>
+        
+        
+        
+        
+        </div>
+
+
     </div>
 
 

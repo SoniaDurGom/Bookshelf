@@ -15,9 +15,9 @@ class AutorController extends Controller
      *
      * @return \Illuminate\Http\Response
      */
-    public function registro()
+    public function formulario()
     {
-        return view('autores.registro');
+        return view('auth.autor-login');
     }
 
     /**
@@ -28,30 +28,38 @@ class AutorController extends Controller
      */
     public function guardar(Request $request)
     {
+        
         // Validar los datos del formulario.
         $datosValidados = $request->validate([
-            'nombre' => 'required|string|max:255',
+            'name' => 'required|string|max:255',
             'email' => 'required|email|unique:perfiles|max:255',
             'password' => 'required|string|min:8|confirmed',
-            'biografia' => 'nullable|string',
+            'biografia' => 'nullable|string|max:500',
         ]);
+        // dd( $datosValidados);
+
+       
 
         // Crear el perfil del autor.
         $perfil = new Perfil;
-        $perfil->nombre = $datosValidados['nombre'];
+        $perfil->name = $datosValidados['name'];
         $perfil->email = $datosValidados['email'];
         $perfil->password = bcrypt($datosValidados['password']);
+      
         $perfil->save();
+        
 
         // Crear el autor asociado al perfil.
         $autor = new Autor;
-        $autor->id_perfil = $perfil->id;
+        $autor->perfil_id = $perfil->id;
         $autor->biografia = $datosValidados['biografia'];
         $autor->aprobado = false;
+        
         $autor->save();
 
+
         // Redireccionar al usuario a la página de inicio con un mensaje de éxito.
-        return redirect('/')->with('mensaje', 'Su registro como autor está pendiente de revisión por parte del administrador. Se le enviarán las credenciales de acceso por correo electrónico si su registro es aprobado.');
+        // return redirect('/')->with('mensaje', 'Su registro como autor está pendiente de revisión por parte del administrador. Se le enviarán las credenciales de acceso por correo electrónico si su registro es aprobado.');
     }
 
     /**
@@ -62,18 +70,47 @@ class AutorController extends Controller
     public function panelControl()
     {
         // Obtener el perfil del autor.
-        $perfil = Perfil::where('email', Auth::user()->email)->firstOrFail();
+        // $perfil = Perfil::where('email', Auth::user()->email)->firstOrFail();
 
         // Obtener el autor correspondiente al perfil del autor.
-        $autor = Autor::where('id_perfil', $perfil->id)->firstOrFail();
+        // $autor = Autor::where('id_perfil', $perfil->id)->firstOrFail();
 
         // Obtener los artículos del autor.
-        $articulos = $autor->articulos;
+        // $articulos = $autor->articulos;
 
-        return view('autores.panelControl', [
-            'perfil' => $perfil,
-            'autor' => $autor,
-            'articulos' => $articulos,
+        $autor = Auth::guard('autores')->user();
+        // dd($autor);
+        // $nombre = $autor->perfil->name;
+        // // dd($nombre);
+        // return view('autores_panelControl', compact('nombre'));
+
+
+        return view('autores_panelControl', [
+            'perfil' => $autor,
         ]);
+
+
+
+
+
+
+
+        // if (!$autor->aprobado) {
+        //     return redirect()->route('autores.aprobacionPendiente');
+        // }
+
+        // return view('autores.panelControl', [
+        //     'perfil' => $perfil,
+        //     'autor' => $autor,
+        // ]);
     }
+
+
+    public function aprobacionPendiente()
+    {
+        return view('auth.autor-aprobacion-pendiente');
+    }
+
+
+
 }

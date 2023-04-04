@@ -7,6 +7,7 @@ use Illuminate\Support\Facades\Auth;
 use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\AutorController;
 use App\Http\Controllers\AdminLoginController;
+use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\LectorController;
 
 /*
@@ -60,19 +61,26 @@ Route::middleware('auth:administradores')->group(function () {
 });
 
 // Rutas para autores
-Route::get('/autores/registro', [AutorController::class, 'registro'])->name('autores.registro.formulario');
+Route::get('/autores/registro', [AutorController::class, 'formulario'])->name('autores.login');
 Route::post('/autores/registro', [AutorController::class, 'guardar'])->name('autores.guardar'); //Registro
+Route::post('/', [LoginController::class, 'login'])->name('index.login'); //Login de lector por Post, se realiza el acceso con las credenciales del lector
+
 Route::middleware('auth:autores')->group(function () {
     Route::get('/autores/panel-control', [AutorController::class, 'panelControl'])->name('autores.panelControl');
+    Route::get('/autores/aprobacion-pendiente', [AutorController::class, 'aprobacionPendiente'])->name('autores.aprobacionPendiente');
 });
 
 // Rutas para lectores
 Route::get('/', [LectorController::class, 'formulario'])->name('lectores.login'); //Muestra Login principal de la pagina
-Route::post('/', [LectorController::class, 'login'])->name('lectores.login'); //Login de lector por Post, se realiza el acceso con las credenciales del lector
+Route::post('/', [LoginController::class, 'login'])->name('index.login'); //Login de lector por Post, se realiza el acceso con las credenciales del lector
 // Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [LectorController::class, 'guardar'])->name('lectores.guardar');
 Route::middleware('auth:lector')->group(function () {
     Route::get('/lectores/panel-control', [LectorController::class, 'panelControl'])->name('lectores.panelControl');
+    Route::post('/perfil/subir-foto',  [LectorController::class, 'subirFoto'])->name('lectores.subir-foto');
+    Route::delete('/lectores/borrar-cuenta', [LectorController::class, 'borrarCuenta'])->name('lectores.borrarCuenta');
+
+
 });
 
 

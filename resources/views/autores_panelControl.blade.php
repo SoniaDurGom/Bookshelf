@@ -9,15 +9,23 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
-    @extends('layouts.layout2')
+    @extends('layouts.app')
 
     @section('content')
         <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
-                        <div class="card-header">{{ __('Panel de administración de ') }}  {{ $perfil->perfil->name }} </div>
-                            {{ __('¡Bienvenid@ admin!') }}
+                        <div class="card-header">{{ __('Panel personal de ') }}   {{ $perfil->perfil->name }} </div>
+
+                        <div class="card-body">
+                            @if (session('status'))
+                                <div class="alert alert-success" role="alert">
+                                    {{ session('status') }}
+                                </div>
+                            @endif
+
+                            {{ __('¡Bienvenid@ autor!') }}   {{ $perfil->perfil->name }}
                         </div>
                     </div>
                 </div>
@@ -28,5 +36,3 @@
     
 </body>
 </html>
-
-

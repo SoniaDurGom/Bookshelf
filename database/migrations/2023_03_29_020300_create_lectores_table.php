@@ -15,9 +15,10 @@ return new class extends Migration
         Schema::create('lectores', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('perfil_id');
+            $table->string('foto')->nullable();
             $table->timestamps();
-        
-            $table->foreign('perfil_id')->references('id')->on('perfiles');
+            $table->foreign('perfil_id')->references('id')->on('perfiles')->onDelete('cascade');
+            // $table->foreign('perfil_id')->references('id')->on('perfiles');
         });
         
         

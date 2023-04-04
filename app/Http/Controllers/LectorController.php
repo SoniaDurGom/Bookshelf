@@ -5,8 +5,11 @@ namespace App\Http\Controllers;
 use App\Models\Lector;
 use App\Models\Perfil;
 use Illuminate\Http\Request;
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Hash;
+use Illuminate\Support\Facades\Storage;//Para subir fotos
+
 
 class LectorController extends Controller
 {
@@ -86,11 +89,10 @@ class LectorController extends Controller
         $lector->save();
 
         // Autenticar al lector y redireccionarlo a su panel de control.
-        // $lecor = Auth::guard('lector')->user();
-        // $nombre = $administrador->perfil->name;
 
-        Auth::login($lector);
-        return redirect('/lectores/panel-control');
+        Auth::guard('lector')->login($lector);
+
+        return redirect()->route('lectores.panelControl');
     }
 
     /**
@@ -101,13 +103,77 @@ class LectorController extends Controller
     public function panelControl()
     {
         // Obtener el perfil del lector.
+        // dd("panel de control");
         $lector = Auth::guard('lector')->user();
-        $nombre = $lector->perfil->name;
+        // dd($lector);
+        // $nombre = $lector->perfil->name;
         // dd($nombre);
-        return view('lectores_panelControl', compact('nombre'));
+        // return view('lectores_panelControl', compact('nombre'));
 
-        // return view('lectores.panelControl', [
-        //     'perfil' => $lector,
-        // ]);
+        return view('lectores_panelControl', [
+            'perfil' => $lector,
+        ]);
     }
+
+
+
+
+
+    public function subirFoto(Request $request)
+    {
+        // Validar que se ha enviado una foto
+        $request->validate([
+            'foto' => 'required|image|mimes:jpeg,png,jpg,svg|max:2048', // 2MB como máximo
+        ]);
+
+        // Obtener el archivo de la solicitud
+        $foto = $request->file('foto');
+
+        // Generar un nombre único para la foto
+        $nombreFoto = uniqid() . '.' . $foto->getClientOriginalExtension();
+
+        // Almacenar la foto en el sistema de archivos
+        Storage::disk('public')->putFileAs(
+            'fotos-perfil',
+            $foto,
+            $nombreFoto
+        );
+        
+
+
+        // Actualizar la columna "foto" en la tabla "lectores" con la ruta a la foto
+        $lector = Lector::find(auth()->id());
+        $lector->foto = '/storage/fotos-perfil/' . $nombreFoto;
+        $lector->save();
+
+        // Redirigir a la página de perfil
+        return redirect()->route('lectores.panelControl')->with('success', 'La foto de perfil se ha subido correctamente.');
+    }
+
+
+    public function borrarCuenta()
+    {
+        $lector = Auth::guard('lector')->user();
+        $perfil = $lector->perfil;
+
+        // Eliminar la foto del perfil si existe
+        if ($perfil->foto) {
+            Storage::disk('public')->delete($perfil->foto);
+        }
+
+        // Eliminar el perfil del lector y todas las relaciones
+        $perfil->delete();
+
+        // Desautenticar al lector y redireccionarlo al formulario de inicio de sesión
+        Auth::guard('lector')->logout();
+
+        return redirect()->route('login')->with('success', 'La cuenta se ha eliminado correctamente.');
+    }
+
+
+
+
+
+
+
 }

@@ -74,8 +74,14 @@ class AdministradorController extends Controller
     public function panelControl()
     {
         $administrador = Auth::guard('administradores')->user();
-        $nombre = $administrador->perfil->name;
+        // $nombre = $administrador->perfil->name;
         // dd($nombre);
-        return view('auth.administradores_panelControl', compact('nombre'));
+        // return view('auth.administradores_panelControl', compact('nombre'));
+
+        return view('auth.administradores_panelControl', [
+            'perfil' => $administrador,
+        ]);
+
+        
     }
 }
