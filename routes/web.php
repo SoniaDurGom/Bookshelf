@@ -8,6 +8,7 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\AutorController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LectorController;
 
 /*
@@ -76,9 +77,15 @@ Route::post('/', [LoginController::class, 'login'])->name('index.login'); //Logi
 // Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
 Route::post('/register', [LectorController::class, 'guardar'])->name('lectores.guardar');
 Route::middleware('auth:lector')->group(function () {
+    Route::get('/index', [HomeController::class, 'index'])->name('index'); //Muestra Login principal de la pagina
     Route::get('/lectores/panel-control', [LectorController::class, 'panelControl'])->name('lectores.panelControl');
     Route::post('/perfil/subir-foto',  [LectorController::class, 'subirFoto'])->name('lectores.subir-foto');
     Route::delete('/lectores/borrar-cuenta', [LectorController::class, 'borrarCuenta'])->name('lectores.borrarCuenta');
+
+    Route::get('/lectores/ajustes', [LectorController::class, 'formularioAjustes'])->name('lectores.formulario.ajustes'); //De momento solo cambia el dato de nombre
+    Route::post('/lectores/ajustes',  [LectorController::class, 'cambiarAjustes'])->name('lectores.cambiarAjustes');
+
+    
 
 
 });

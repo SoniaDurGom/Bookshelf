@@ -12,7 +12,7 @@
     @extends('layouts.app')
 
     @section('content')
-        <div class="container">
+        {{-- <div class="container">
             <div class="row justify-content-center">
                 <div class="col-md-8">
                     <div class="card">
@@ -30,7 +30,40 @@
                     </div>
                 </div>
             </div>
+        </div> --}}
+
+        <div class="container">
+            <div class="row">
+                <div class="col-xl-4 col-md-6">
+                    {{-- Izquierda --}}
+                    <h5>Leyendo</h5>
+                    <h5>Pendientes</h5>
+                    <h5>Libreria</h5>
+
+
+                </div>
+
+                <div class="col-xl-4 d-none d-xl-block">
+                    {{-- Centro --}}
+                    <img class="img_index" src="{{ asset('img/index_img.jpeg') }}" alt="Foto central" >
+                </div>
+                
+
+                <div class="col-xl-4 col-md-6">
+                    {{-- Derecha --}}
+                    <h5>Recomendaciones</h5>
+                    <h5>Retos</h5>
+
+
+                </div>
+
+            </div>
         </div>
+
+
+
+
+        
     @endsection
 
     

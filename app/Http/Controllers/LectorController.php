@@ -102,14 +102,8 @@ class LectorController extends Controller
      */
     public function panelControl()
     {
-        // Obtener el perfil del lector.
-        // dd("panel de control");
+        
         $lector = Auth::guard('lector')->user();
-        // dd($lector);
-        // $nombre = $lector->perfil->name;
-        // dd($nombre);
-        // return view('lectores_panelControl', compact('nombre'));
-
         return view('lectores_panelControl', [
             'perfil' => $lector,
         ]);
@@ -171,8 +165,43 @@ class LectorController extends Controller
     }
 
 
+    public function formularioAjustes()
+    {
 
+        $lector = Auth::guard('lector')->user();
+        return view('lector-formulario-ajustes', [
+            'perfil' => $lector,
+        ]);
+    }
 
+    public function cambiarAjustes(Request $request)
+    {
+        $lector = Auth::guard('lector')->user();
+        $perfil = $lector->perfil;
+
+        
+       
+        $datosValidados = $request->validate([
+            'name' => 'required|string|max:255',
+            'email' => 'required|email|unique:perfiles|max:255',
+            'password' => 'nullable|string|min:8|confirmed',
+        ]);
+        // dd($request);
+        
+        $perfil->name = $datosValidados['name'];
+        $perfil->email = $datosValidados['email'];
+        if (isset($datosValidados['password']) && $perfil->password != $datosValidados['password']) {
+            $perfil->password = bcrypt($datosValidados['password']);
+        }
+
+      
+
+        $perfil->save();
+
+        Auth::guard('lector')->login($lector);
+        // Redirigir a la página de perfil
+        return redirect()->route('lectores.panelControl')->with('success', 'La foto de perfil se ha subido correctamente.');
+    }
 
 
 

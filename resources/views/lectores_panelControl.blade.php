@@ -16,7 +16,7 @@
             <div class="row justify-content-center">
                 <div class="col col-md-10">
                     <div class="card">
-                        <div class="card-header">{{ __('Ajustes de cuenta ') }} </div>
+                        <div class="card-header">{{ __('Perfil de lector') }} </div>
 
                         <div class="card-body">
                             @if (session('status'))
@@ -37,13 +37,13 @@
 
                                     </div>
                                 
-                                    <br>
+                                    {{-- <br>
 
                                     <form action="/perfil/subir-foto" method="POST" enctype="multipart/form-data">
                                         @csrf
                                         <input type="file" name="foto"> <br><br>
                                         <button class="btn btn-primary" type="submit">Subir</button>
-                                    </form>
+                                    </form> --}}
 
                                 </div>
 
@@ -52,12 +52,16 @@
                                 <div class= "col-8 col-xl-5">
                                     <span class="texto_campos_panelControl"> Nombre: </span> {{ $perfil->perfil->name }} </span> <br>
                                     <span class="texto_campos_panelControl">Miembro desde:</span>  {{ $perfil->perfil->created_at->format('d/m/Y') }} </span>
-                                    <form action="{{ route('lectores.borrarCuenta') }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres eliminar tu cuenta?')">
+                                    {{-- <form action="{{ route('lectores.borrarCuenta') }}" method="POST" onsubmit="return confirm('¿Estás seguro de que quieres eliminar tu cuenta?')">
                                         @csrf
                                         @method('DELETE')
                                         <button type="submit" class="text-danger boton-rojo"> Borrar cuenta </button>
                                         <wbr>
-                                    </form>
+                                    </form> --}}
+                                    <br>
+                                    <a class="link" href="{{ route('lectores.formulario.ajustes') }}">(editar perfil)</a>
+
+                                   
                                     
                                 </div>
 

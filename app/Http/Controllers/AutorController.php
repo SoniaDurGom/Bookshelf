@@ -59,7 +59,7 @@ class AutorController extends Controller
 
 
         // Redireccionar al usuario a la página de inicio con un mensaje de éxito.
-        // return redirect('/')->with('mensaje', 'Su registro como autor está pendiente de revisión por parte del administrador. Se le enviarán las credenciales de acceso por correo electrónico si su registro es aprobado.');
+        return redirect('/')->with('mensaje', 'Su registro como autor está pendiente de revisión por parte del administrador. Se le enviarán las credenciales de acceso por correo electrónico si su registro es aprobado.');
     }
 
     /**

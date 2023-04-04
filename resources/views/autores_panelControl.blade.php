@@ -9,7 +9,7 @@
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
 </head>
 <body>
-    @extends('layouts.app')
+    @extends('layouts.layout2')
 
     @section('content')
         <div class="container">

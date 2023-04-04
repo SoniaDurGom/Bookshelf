@@ -257,13 +257,25 @@ div.col {
 
 }
 
+  .link {
+    color:#00adb5;
+    font-weight: 500;
+    font-size: small;
+
+  }
+
+
 
 .texto_campos_panelControl{
   font-weight: 700;
 }
 
 
-
+.img_index{
+  border-radius: 30px; 
+  max-width: 300px;
+  height: 400px;
+}
 
  
 

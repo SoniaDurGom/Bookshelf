@@ -32,16 +32,16 @@
                       <li class="nav-item dropdown">
                           <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
                             <img id="user" alt="user" src="{{ asset('icons/usuario.png') }}">  
-                            {{ Auth::user()->name }}
+                            {{ $perfil->perfil->name }}
                               
                           </a>
     
                           <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 
-                            <a class="dropdown-item" href="">
-                              {{-- {{ route('cuenta') }} --}}
+                            {{-- <a class="dropdown-item" href="{{  Auth::guard('autores')->user() ? route('autores.panelControl') : route('administradores.panelControl') }}">
+                              
                                   {{ __('Cuenta') }}
-                              </a>
+                              </a> --}}
 
                               <a class="dropdown-item" href="{{ route('logout') }}"
                                  onclick="event.preventDefault();
