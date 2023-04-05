@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Facade;
+use Illuminate\Support\Facades\Auth;
 
 return [
 
@@ -208,8 +209,11 @@ return [
     |
     */
 
-    'aliases' => Facade::defaultAliases()->merge([
-        // 'ExampleClass' => App\Example\ExampleClass::class,
-    ])->toArray(),
+    'aliases' => [
+        'Auth' => Illuminate\Support\Facades\Auth::class,
+        'Breadcrumbs' => Diglactic\Breadcrumbs\Facade::class,
+        'Route'=> Illuminate\Support\Facades\Route::class,
+    ],
+    
 
 ];

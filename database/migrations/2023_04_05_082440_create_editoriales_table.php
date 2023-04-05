@@ -11,18 +11,11 @@ return new class extends Migration
      */
     public function up(): void
     {
-        
-        Schema::create('lectores', function (Blueprint $table) {
+        Schema::create('editoriales', function (Blueprint $table) {
             $table->id();
-            $table->string('foto')->nullable();
+            $table->string('nombre');
             $table->timestamps();
-            $table->unsignedBigInteger('perfil_id');
-            $table->foreign('perfil_id')->references('id')->on('perfiles')->onDelete('cascade');
-            // $table->foreign('perfil_id')->references('id')->on('perfiles');
-           
         });
-        
-        
     }
 
     /**
@@ -30,6 +23,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lectores');
+        Schema::dropIfExists('editoriales');
     }
 };

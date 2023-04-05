@@ -204,5 +204,23 @@ class LectorController extends Controller
     }
 
 
+    //TODO: 
+    public function guardarGenerosFavoritos(Request $request)
+    {
+        $lector = Auth::guard('lector')->user();
+        $perfil = $lector->perfil;
+
+        $request->validate([
+            'generos' => 'array|max:3',
+            'generos.*' => 'exists:generos,id',
+        ]);
+
+        $perfil->generosFavoritos()->sync($request->generos);
+
+        return redirect()->route('perfiles.show', $perfil);
+    }
+
+
+
 
 }

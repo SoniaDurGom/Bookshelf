@@ -1,5 +1,6 @@
 
 <header>
+  
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
           <a class="navbar-brand"  href="#"> <img id="logo" alt="logo" src="{{ asset('logo/bslogo.png') }}"> </a>
@@ -14,25 +15,43 @@
               <li class="nav-item">
                 <a class="nav-link" href="libro">Mis librerias</a>
               </li>
+              
               <li class="nav-item dropdown">
                 <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-                  Buscar
+                  <span class="text-truncate" style="max-width: 100px;" title="Buscar">Buscar</span>
                 </a>
-                <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
-                  <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                <ul class="dropdown-menu dropdown-menu-custom">
+                  <li>
+                    <div class="row">
+                      <div class="col-6">
+                        <a class="dropdown-item dropdown-item-white" href="#">Recomendaciones</a>
+                        <a class="dropdown-item dropdown-item-white" href="#">Novedades</a>
+                        <a class="dropdown-item dropdown-item-white" href="{{route('libros.index')}}">Explorar</a>
+                      </div>
+                      <div class="col-6">
+                        <h6 class="dropdown-header">Géneros favoritos</h6>
+                        {{-- !Sacar los generos favoritos del usuario MAX 3 --}}
+                        {{-- <a class="dropdown-item dropdown-item-white" href="{{route('genero.index',$perfil)}}">{{$perfil->genero}}</a> --}}
+                        <a class="dropdown-item dropdown-item-white" href="#">Género 1</a>
+                        <a class="dropdown-item dropdown-item-white" href="#">Género 2</a>
+                        <a class="dropdown-item dropdown-item-white" href="#">Género 3</a>
+                        <a class="dropdown-item dropdown-item-white" href="#">Todos</a>
+                      </div>
+                    </div>
+                  </li>
                 </ul>
-              </li><li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+              </li>
+              
+              
+              <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle disabled" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Comunidad
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item" href="#">Action</a></li>
-                  <li><a class="dropdown-item" href="#">Another action</a></li>
+                  <li><a class="dropdown-item dropdown-item-white" href="#">Grupos</a></li>
+                  <li><a class="dropdown-item dropdown-item-white" href="#">Amigos</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item" href="#">Something else here</a></li>
+                  <li><a class="dropdown-item dropdown-item-white" href="#">Autores en Bookshelf</a></li>
                 </ul>
               </li>
             </ul>
@@ -72,12 +91,12 @@
 
                       <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
 
-                        <a class="dropdown-item" href="{{  Auth::guard('lector')->user() ? route('lectores.panelControl') : route('index.login') }}">
+                        <a class="dropdown-item dropdown-item-white" href="{{  Auth::guard('lector')->user() ? route('lectores.panelControl') : route('index.login') }}">
                           {{-- {{ route('cuenta') }} --}}
                               {{ __('Cuenta') }}
                           </a>
 
-                          <a class="dropdown-item" href="{{ route('logout') }}"
+                          <a class="dropdown-item dropdown-item-white" href="{{ route('logout') }}"
                              onclick="event.preventDefault();
                                            document.getElementById('logout-form').submit();">
                               {{ __('Salir') }}

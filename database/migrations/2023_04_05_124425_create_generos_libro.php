@@ -11,18 +11,18 @@ return new class extends Migration
      */
     public function up(): void
     {
-        
-        Schema::create('lectores', function (Blueprint $table) {
+        Schema::create('generos_libro', function (Blueprint $table) {
             $table->id();
-            $table->string('foto')->nullable();
+            $table->unsignedBigInteger('genero_id');
+            $table->foreign('genero_id')->references('id')->on('generos');
+
+            $table->unsignedBigInteger('libro_id');
+            $table->foreign('libro_id')->references('id')->on('libros');
             $table->timestamps();
-            $table->unsignedBigInteger('perfil_id');
-            $table->foreign('perfil_id')->references('id')->on('perfiles')->onDelete('cascade');
-            // $table->foreign('perfil_id')->references('id')->on('perfiles');
+
            
+            
         });
-        
-        
     }
 
     /**
@@ -30,6 +30,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('lectores');
+        Schema::dropIfExists('generos_libro');
     }
 };

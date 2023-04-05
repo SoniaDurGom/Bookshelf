@@ -10,6 +10,7 @@ use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LectorController;
+use App\Http\Controllers\LibroController;
 
 /*
 |--------------------------------------------------------------------------
@@ -84,6 +85,10 @@ Route::middleware('auth:lector')->group(function () {
 
     Route::get('/lectores/ajustes', [LectorController::class, 'formularioAjustes'])->name('lectores.formulario.ajustes'); //De momento solo cambia el dato de nombre
     Route::post('/lectores/ajustes',  [LectorController::class, 'cambiarAjustes'])->name('lectores.cambiarAjustes');
+
+    Route::get('/libros', [LibroController::class, 'todosLosGeneros'])->name('libros.index');
+    Route::get('/libros/{genero}', [LibroController::class, 'librosPorGenero'])->name('genero.index');
+
 
     
 

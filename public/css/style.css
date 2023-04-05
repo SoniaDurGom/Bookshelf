@@ -281,3 +281,45 @@ div.col {
 
   
 
+.dropdown-menu-custom {
+  width: 330px;
+}
+.dropdown-menu-custom .col-6:first-child {
+  border-right: 1px solid #ccc; /* Agregar una línea vertical */
+  
+}
+
+
+
+
+
+
+.dropdown-item-white:focus {
+  background-color: #ccc !important;
+  /* color: #000 !important; */
+}
+
+
+/* .portada_libro{
+  border-radius: 10px;
+ 
+} */
+
+
+.card-img-top {
+  width: 100% ;
+  height:auto;
+  object-fit: cover;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+.title-text{
+  color:#00adb5;
+  font-weight: bolder;
+}
+
+.breadcrumb-item a{
+  color: #00adb5;
+ 
+}
