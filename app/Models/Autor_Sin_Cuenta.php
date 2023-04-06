@@ -8,15 +8,15 @@ use Illuminate\Database\Eloquent\Model;
 class Autor_Sin_Cuenta extends Model
 {
     use HasFactory;
+    protected $table = 'autores_sin_cuenta';
 
     protected $fillable = [
         'nombre',
         'apellidos',
     ];
 
-    //Un autor tiene varios libros
     public function libros()
     {
-        return $this->belongsToMany(Libro::class);
+        return $this->belongsToMany(Libro::class, 'autores_libros', 'autor_id', 'libro_id')->withTimestamps();
     }
 }

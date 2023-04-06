@@ -263,6 +263,10 @@ div.col {
     font-size: small;
 
   }
+  .link:hover {
+    color:#007c82;
+
+  }
 
 
 
@@ -300,10 +304,13 @@ div.col {
 }
 
 
-/* .portada_libro{
-  border-radius: 10px;
- 
-} */
+.portada_libro_ficha{
+  max-width: 100%;
+  height: auto;
+  /* object-fit: cover; */
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
 
 
 .card-img-top {
@@ -323,3 +330,26 @@ div.col {
   color: #00adb5;
  
 }
+
+
+
+
+
+.link_autor{
+  color:#00adb5 ;
+}
+
+.link_autor:hover{
+  color:#007c82 ;
+}
+
+
+
+
+.valoraciones_txt_libro{
+  font-size: small;
+  color: grey;
+}
+
+
+

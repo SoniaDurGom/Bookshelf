@@ -60,5 +60,6 @@ class Perfil extends Authenticatable
     }
    
 
+    
 
 }

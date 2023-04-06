@@ -8,7 +8,11 @@
     <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}">
     <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
-  
+    <link rel="stylesheet" href="{{ asset('fontawesome/css/all.min.css') }}">  
+    <link rel="stylesheet" href="{{ asset('fontawesome/js/all.min.js') }}">  
+
+    {{-- <script src="{{ asset('js/mostrarPwd.js') }}"></script> --}}
+    {{-- <script src="{{ asset('js/starReview.js') }}"></script> --}}
 
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0-alpha2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-aFq/bzH65dt+w6FI2ooMVUpc+21e0SRygnTpmBvdBgSdnuTN7QbdgL+OapgHtvPp" crossorigin="anonymous">
     <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.11.6/dist/umd/popper.min.js" integrity="sha384-oBqDVmMz9ATKxIep9tiCxS/Z9fNfEXiDAYTujMAeBAsjFuCZSmKbSSUnQlmh/jp3" crossorigin="anonymous"></script>

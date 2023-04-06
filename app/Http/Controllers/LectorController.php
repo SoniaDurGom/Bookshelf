@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Genero;
 use App\Models\Lector;
 use App\Models\Perfil;
 use Illuminate\Http\Request;
@@ -104,8 +105,10 @@ class LectorController extends Controller
     {
         
         $lector = Auth::guard('lector')->user();
+        $generos= Genero::all();
         return view('lectores_panelControl', [
             'perfil' => $lector,
+            'generos'=> $generos,
         ]);
     }
 
@@ -179,22 +182,17 @@ class LectorController extends Controller
         $lector = Auth::guard('lector')->user();
         $perfil = $lector->perfil;
 
-        
-       
         $datosValidados = $request->validate([
             'name' => 'required|string|max:255',
             'email' => 'required|email|unique:perfiles|max:255',
             'password' => 'nullable|string|min:8|confirmed',
         ]);
-        // dd($request);
         
         $perfil->name = $datosValidados['name'];
         $perfil->email = $datosValidados['email'];
         if (isset($datosValidados['password']) && $perfil->password != $datosValidados['password']) {
             $perfil->password = bcrypt($datosValidados['password']);
         }
-
-      
 
         $perfil->save();
 
@@ -204,21 +202,12 @@ class LectorController extends Controller
     }
 
 
+
+
     //TODO: 
-    public function guardarGenerosFavoritos(Request $request)
-    {
-        $lector = Auth::guard('lector')->user();
-        $perfil = $lector->perfil;
-
-        $request->validate([
-            'generos' => 'array|max:3',
-            'generos.*' => 'exists:generos,id',
-        ]);
-
-        $perfil->generosFavoritos()->sync($request->generos);
-
-        return redirect()->route('perfiles.show', $perfil);
-    }
+    // función en el controlador de lectores que obtiene los géneros favoritos del lector y los libros mejor valorados,
+    //  filtra los libros por género y los ordena por popularidad para finalmente mostrar 
+    //  la recomendación en la vista correspondiente.
 
 
 

@@ -8,9 +8,11 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\AutorController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\GeneroController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LectorController;
 use App\Http\Controllers\LibroController;
+use App\Http\Controllers\ValoracionesController;
 
 /*
 |--------------------------------------------------------------------------
@@ -87,12 +89,14 @@ Route::middleware('auth:lector')->group(function () {
     Route::post('/lectores/ajustes',  [LectorController::class, 'cambiarAjustes'])->name('lectores.cambiarAjustes');
 
     Route::get('/libros', [LibroController::class, 'todosLosGeneros'])->name('libros.index');
-    Route::get('/libros/{genero}', [LibroController::class, 'librosPorGenero'])->name('genero.index');
+    Route::get('/libros/genero={genero}', [LibroController::class, 'librosPorGenero'])->name('genero.index'); //!MUCHO CUIDADO CON LOS CONFLICTOS DE RUTAS
+    Route::get('/libros/codigo={id}', [LibroController::class, 'fichaLibro'])->name('libros.fichaLibro');
 
+    Route::post('/libro/valoracion', [ValoracionesController::class, 'guardarValoracion'])->name('valoracion.guardar');
+
+    Route::post('/lectores/panel-control', [GeneroController::class, 'guardarFavoritos'])->name('generos.guardar-favoritos');
 
     
-
-
 });
 
 

@@ -93,7 +93,7 @@
                             
                             <div class="row">
                                 {{-- Leyendo actualmente --}}
-                                <h5>Libros favoritos</h5>
+                                <h5>Leyendo actualmente</h5>
                                 <hr>
                                    
                                    
@@ -106,6 +106,26 @@
                              {{-- Generos favoritos --}}
                                 <h5>Generos favoritos</h5>
                                 <hr>
+                                {{-- Mostrar todos los generos de la tabla generos, que se marquen en azul los que son actualmente los favoritos --}}
+                                {{-- Permitir marcar 3 --}}
+                                {{-- Boton guardar --}}
+                                <form action="{{ route('generos.guardar-favoritos') }}" method="POST">
+                                    @csrf
+                                    <div class="row row-cols-3 row-cols-md-6">
+                                      @foreach($generos as $index => $genero)
+                                        @if($index % 3 === 0)
+                                          </div><div class="row row-cols-3 row-cols-md-6">
+                                        @endif
+                                        <div class="col">
+                                            <input type="checkbox" name="favoritos[{{ $genero->id }}]" value="{{ $genero->id }}" @if($perfil->generosFavoritos->contains($genero->id)) checked @endif>
+                                            <label>{{ $genero->nombre }}</label>
+                                        </div>
+                                      @endforeach
+                                    </div>
+                                    <button class="btn btn-primary" type="submit">Guardar</button>
+                                  </form>
+                                  
+                                  
                                        
                         
                                         

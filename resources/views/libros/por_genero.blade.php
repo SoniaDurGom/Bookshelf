@@ -15,9 +15,12 @@
                         <div>
                             <img class="card-img-top" src="{{ $libro->portada }}" alt="{{ $libro->titulo }}">
                             <div class="card-body">
-                                <h6 class="card-title" style="height: 60px; overflow: hidden;">{{ $libro->titulo }}</h6>
+                                {{-- <h6 class="card-title" style="height: 60px; overflow: hidden;">{{ $libro->titulo }}</h6> --}}
                                 <div class="text-center">
-                                    <a href="" class="btn btn-primary" >Ver más</a>
+                                    
+                                    <a href="{{ route('libros.fichaLibro', $libro->id) }}" class="btn btn-primary">Ver más</a>
+
+
                                 </div>
                             </div>
                         </div>

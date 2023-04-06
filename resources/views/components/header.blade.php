@@ -32,10 +32,11 @@
                         <h6 class="dropdown-header">Géneros favoritos</h6>
                         {{-- !Sacar los generos favoritos del usuario MAX 3 --}}
                         {{-- <a class="dropdown-item dropdown-item-white" href="{{route('genero.index',$perfil)}}">{{$perfil->genero}}</a> --}}
-                        <a class="dropdown-item dropdown-item-white" href="#">Género 1</a>
-                        <a class="dropdown-item dropdown-item-white" href="#">Género 2</a>
-                        <a class="dropdown-item dropdown-item-white" href="#">Género 3</a>
-                        <a class="dropdown-item dropdown-item-white" href="#">Todos</a>
+                       
+                          @foreach(Auth::guard('lector')->user()->generosFavoritos as $genero)
+                              <a class="dropdown-item dropdown-item-white" href="{{route('genero.index',$genero->nombre)}}">{{$genero->nombre}}</a>
+                          @endforeach
+                          <a class="dropdown-item dropdown-item-white" href="{{route('libros.index')}}">Todos</a>
                       </div>
                     </div>
                   </li>

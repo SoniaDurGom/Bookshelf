@@ -60,9 +60,6 @@
                                         <button type="submit" class="btn btn-primary"> Actualizar </button>
                                       </form>
                                       
-                                      {{-- !MOVERLO A js --}}
-                                      
-                                      
                                    
                                    
                                     

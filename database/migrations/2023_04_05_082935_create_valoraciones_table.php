@@ -17,6 +17,7 @@ return new class extends Migration
             $table->text('comentario')->nullable();
             $table->foreignId('libro_id')->constrained('libros');
             $table->foreignId('lector_id')->constrained('lectores');
+            // $table->unique(['libro_id', 'lector_id']); //Solo una Valoracion por par libro-usuario
             $table->timestamps();
         });
     }

@@ -8,6 +8,7 @@ use Illuminate\Database\Eloquent\Model;
 class Valoracion extends Model
 {
     use HasFactory;
+    protected $table = 'valoraciones';
 
     //Una valoracion pertenece a un libro
     public function libro()
