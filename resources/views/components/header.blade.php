@@ -3,7 +3,7 @@
   
     <nav class="navbar navbar-expand-lg bg-light">
         <div class="container-fluid">
-          <a class="navbar-brand"  href="#"> <img id="logo" alt="logo" src="{{ asset('logo/bslogo.png') }}"> </a>
+          <a class="navbar-brand"  href="{{ route('index') }}"> <img id="logo" alt="logo" src="{{ asset('logo/bslogo.png') }}"> </a>
           <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
             <span class="navbar-toggler-icon"></span>
           </button>
@@ -13,7 +13,7 @@
                 <a class="nav-link active" aria-current="page" href="{{ route('index') }}">Inicio</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="libro">Mis librerias</a>
+                <a class="nav-link" href="{{route('librerias.mostrar')}}">Mis librerias</a>
               </li>
               
               <li class="nav-item dropdown">
@@ -24,8 +24,8 @@
                   <li>
                     <div class="row">
                       <div class="col-6">
-                        <a class="dropdown-item dropdown-item-white" href="#">Recomendaciones</a>
-                        <a class="dropdown-item dropdown-item-white" href="#">Novedades</a>
+                        <a class="dropdown-item dropdown-item-white" href="{{route('libros.recomendaciones')}}">Recomendaciones</a>
+                        <a class="dropdown-item dropdown-item-white" href="{{route('libros.novedades')}}">Novedades</a>
                         <a class="dropdown-item dropdown-item-white" href="{{route('libros.index')}}">Explorar</a>
                       </div>
                       <div class="col-6">
@@ -70,17 +70,33 @@
             </form>
               <!-- Authentication Links -->
               @guest
-                  @if (Route::has('login'))    
-                      <li class="nav-item">
-                          <a class="nav-link" href="{{ route('login') }}">{{ __('Inicio') }}</a>
-                      </li>
-                  @endif
+              <ul class="navbar-nav d-flex flex-row">
+                <li class="nav-item dropdown">
+                    <a id="navbarDropdown" class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false" v-pre>
+                      <img id="user" alt="user" src="{{ asset('icons/usuario.png') }}">  
+                      {{ $perfil->perfil->name }}
+                        
+                    </a>
 
-                  @if (Route::has('register'))
-                      <li class="nav-item ms-2">
-                          <a class="nav-link" href="{{ route('register') }}">{{ __('Registrase') }}</a>
-                      </li>
-                  @endif
+                    <div class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+
+                      <a class="dropdown-item dropdown-item-white" href="{{  Auth::guard('lector')->user() ? route('lectores.panelControl') : route('index.login') }}">
+                        {{-- {{ route('cuenta') }} --}}
+                            {{ __('Cuenta') }}
+                        </a>
+
+                        <a class="dropdown-item dropdown-item-white" href="{{ route('logout') }}"
+                           onclick="event.preventDefault();
+                                         document.getElementById('logout-form').submit();">
+                            {{ __('Salir') }}
+                        </a>
+
+                        <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
+                            @csrf
+                        </form>
+                    </div>
+                </li>
+            </ul>
               @else
               <ul class="navbar-nav d-flex flex-row">
                   <li class="nav-item dropdown">

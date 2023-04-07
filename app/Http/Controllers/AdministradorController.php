@@ -84,4 +84,9 @@ class AdministradorController extends Controller
 
         
     }
+
+
+
+
+    
 }

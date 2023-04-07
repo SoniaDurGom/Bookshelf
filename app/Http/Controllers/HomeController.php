@@ -29,4 +29,6 @@ class HomeController extends Controller
             'perfil' => $lector,
         ]);
     }
+
+   
 }

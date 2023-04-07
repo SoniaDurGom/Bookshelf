@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\Genero;
 use App\Models\Lector;
+use App\Models\Libreria;
 use App\Models\Perfil;
 use Illuminate\Http\Request;
 
@@ -89,6 +90,15 @@ class LectorController extends Controller
         // dd($lector);
         $lector->save();
 
+        $nombres_librerias = ["Leído", "Leyendo", "Quiero leer"];
+        foreach ($nombres_librerias as $nombre) {
+            $libreria = new Libreria();
+            $libreria->nombre = $nombre;
+            $libreria->lector_id = $lector->id;
+            $libreria->save();
+        }
+
+
         // Autenticar al lector y redireccionarlo a su panel de control.
 
         Auth::guard('lector')->login($lector);
@@ -158,13 +168,8 @@ class LectorController extends Controller
             Storage::disk('public')->delete($perfil->foto);
         }
 
-       // Eliminar las relaciones entre el perfil y el resto de tablas
+       // Eliminar las relaciones entre el perfil y sus generos favoritos
         $lector->generosFavoritos()->detach();
-        // $lector->valoraciones()->detach();
-        // $lector->librerias()->detach();
-        // $lector->lecturas()->detach();
-        // $lector->reto()->detach();
-
 
         // Eliminar el perfil del lector y todas las relaciones
         $perfil->delete();

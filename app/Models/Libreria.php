@@ -17,10 +17,11 @@ class Libreria extends Model
     }
 
     //Una libreria tiene varios libros
-    public function libros()
+    public function lecturas()
     {
-        return $this->hasMany(Libro::class);
+        return $this->hasMany(Lectura::class);
     }
+    
 
 
 

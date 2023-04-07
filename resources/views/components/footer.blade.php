@@ -7,13 +7,15 @@
       <footer class="d-flex flex-wrap justify-content-between align-items-center py-3 my-4 ">
         <div class="col-md-2 align-self-start">
           <h5>Sobre nosotros</h5>
-            <a>Conocenos</a> <br>
-            <a>Terminos y condiciones</a>
+            <a href="{{ route('conocenos') }}" class="link-footer">Conocenos</a> <br>
+            <a href="{{ route('terminos') }}" class="link-footer">Terminos y condiciones</a>
         </div>
 
         <div class="col-md-2 col-xl-3 align-self-start ">
           <h5>Trabaja con nosotros</h5>
-            <a>Autores</a>
+            <a href="{{ route('autores.login') }}" class="link-footer">Autores</a>
+
+          
         </div>
 
         <wbr>

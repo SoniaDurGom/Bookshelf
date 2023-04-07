@@ -8,9 +8,11 @@ use App\Http\Controllers\Auth\AuthenticatedSessionController;
 use App\Http\Controllers\AutorController;
 use App\Http\Controllers\AdminLoginController;
 use App\Http\Controllers\Auth\LoginController;
+use App\Http\Controllers\Controller;
 use App\Http\Controllers\GeneroController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LectorController;
+use App\Http\Controllers\LibreriaController;
 use App\Http\Controllers\LibroController;
 use App\Http\Controllers\ValoracionesController;
 
@@ -46,7 +48,8 @@ Route::group(['middleware' => 'auth:admin'], function () {
 
 // rutas públicas
 Auth::routes();
-
+Route::get('/conocenos', [Controller::class, 'conocenos'])->name('conocenos');
+Route::get('/terminos-y-condiciones', [Controller::class, 'terminosYcondiciones'])->name('terminos');
 // Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
 
 // Route::get('/', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
@@ -91,10 +94,19 @@ Route::middleware('auth:lector')->group(function () {
     Route::get('/libros', [LibroController::class, 'todosLosGeneros'])->name('libros.index');
     Route::get('/libros/genero={genero}', [LibroController::class, 'librosPorGenero'])->name('genero.index'); //!MUCHO CUIDADO CON LOS CONFLICTOS DE RUTAS
     Route::get('/libros/codigo={id}', [LibroController::class, 'fichaLibro'])->name('libros.fichaLibro');
+    Route::get('/libro/novedades', [LibroController::class, 'novedades'])->name('libros.novedades');
+    Route::get('/recomendados', [LibroController::class, 'recomendaciones'])->name('libros.recomendaciones');
 
     Route::post('/libro/valoracion', [ValoracionesController::class, 'guardarValoracion'])->name('valoracion.guardar');
 
     Route::post('/lectores/panel-control', [GeneroController::class, 'guardarFavoritos'])->name('generos.guardar-favoritos');
+
+
+    Route::get('/librerias', [LibreriaController::class, 'mostrarLibrerias'])->name('librerias.mostrar');
+    Route::get('/librerias/{libreria}', [LibreriaController::class, 'abrirLibreria'])->name('librerias.libros');
+    Route::post('/librerias/nueva', [LibreriaController::class, 'crearLibreria'])->name('librerias.crearLibreria');
+    Route::delete('/librerias/borrar/{libreria}', [LibreriaController::class, 'borrarLibreria'])->name('librerias.borrarLibreria');
+
 
     
 });

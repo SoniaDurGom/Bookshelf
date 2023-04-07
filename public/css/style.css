@@ -340,6 +340,16 @@ div.col {
 }
 
 
+.link-footer{
+  color:black ;
+  text-decoration: none;
+}
+
+.link-footer:hover{
+  color: #007c82;
+}
+
+
 
 
 

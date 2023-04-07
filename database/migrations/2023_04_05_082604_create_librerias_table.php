@@ -14,7 +14,6 @@ return new class extends Migration
         Schema::create('librerias', function (Blueprint $table) {
             $table->id();
             $table->string('nombre');
-            $table->integer('numero_libros')->default(0);;
             $table->unsignedBigInteger('lector_id');
             $table->foreign('lector_id')->references('id')->on('lectores')->onDelete('cascade');;
             $table->timestamps();

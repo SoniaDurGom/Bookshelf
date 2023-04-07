@@ -35,6 +35,16 @@ class LibroSeeder extends Seeder
                 'numero_paginas' => 992,
                 'editorial_id' => 1,
             ],
+            [
+                'isbn' => '9788426416000',
+                'portada' => 'https://images-na.ssl-images-amazon.com/images/S/compressed.photo.goodreads.com/books/1679116089i/63187188.jpg',
+                'titulo' => 'Guaedianes de la galaxia',
+                'notamedia' => 0,
+                'numero_valoraciones' => 0,
+                'fecha_publicacion' => '2023-01-16',
+                'numero_paginas' => 992,
+                'editorial_id' => 1,
+            ],
             // ...
         ];
 

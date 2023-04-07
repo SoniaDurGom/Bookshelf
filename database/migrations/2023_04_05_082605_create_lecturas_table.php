@@ -18,10 +18,12 @@ return new class extends Migration
             $table->integer('paginas_leidas')->nullable();
             $table->enum('estado', ['Pendiente', 'Leyendo', 'Leido']);
             //Foreings
+            $table->unsignedBigInteger('libreria_id');
+            $table->foreign('libreria_id')->references('id')->on('librerias')->onDelete('cascade');
             $table->unsignedBigInteger('libro_id');
-            $table->foreign('libro_id')->references('id')->on('libros')->onDelete('cascade');;
+            $table->foreign('libro_id')->references('id')->on('libros')->onDelete('cascade');
             $table->unsignedBigInteger('lector_id');
-            $table->foreign('lector_id')->references('id')->on('lectores')->onDelete('cascade');;
+            $table->foreign('lector_id')->references('id')->on('lectores')->onDelete('cascade');
             $table->timestamps();
         });
         
