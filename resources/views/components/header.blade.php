@@ -45,24 +45,17 @@
               
               
               <li class="nav-item dropdown">
-                <a class="nav-link dropdown-toggle disabled" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+                <a class="nav-link dropdown-toggle" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">
                   Comunidad
                 </a>
                 <ul class="dropdown-menu">
-                  <li><a class="dropdown-item dropdown-item-white" href="#">Grupos</a></li>
-                  <li><a class="dropdown-item dropdown-item-white" href="#">Amigos</a></li>
+                  <li><a class="dropdown-item dropdown-item-white disabled" href="#">Grupos</a></li>
+                  <li><a class="dropdown-item dropdown-item-white disabled" href="#">Amigos</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item dropdown-item-white" href="#">Autores en Bookshelf</a></li>
+                  <li><a class="dropdown-item dropdown-item-white" href="#">Autores</a></li>
                 </ul>
               </li>
             </ul>
-            {{-- <div class="d-flex flex-row order-lg-1">
-              <form class="d-flex" role="search">
-                <input class="form-control me-2" type="search" placeholder="Search" aria-label="Search">
-                <button class="btn btn-outline-success " type="submit">Buscar</button>
-              </form>
-            </div> --}}
-            {{-- <button id="log" routerLink="login"> <img id="user" alt="user" src="{{ asset('icons/usuario.png') }}"> </button> --}}
 
             <form class="d-flex" role="search">
               <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">

@@ -2,6 +2,7 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Lectura;
 use App\Models\Libreria;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -13,8 +14,24 @@ class LibreriaController extends Controller
     {
         $librerias = Libreria::all();
         $perfil = Auth::guard('lector')->user();
-        return view('librerias.libreriasLector', compact('librerias', 'perfil'));
+        $lector_id = auth()->guard('lector')->id();
+        
+        $lecturas = Lectura::where('lector_id', $lector_id)->get();
+        return view('librerias.libreriasLector', compact('librerias', 'perfil', 'lecturas'));
     }
+    
+    
+    // Muestra las lecturas guardadas en la libreria seleccionada por nombre
+    public function mostrarLibros($nombreLibreria)
+    {
+        $perfil = Auth::guard('lector')->user();
+        $libreria = Libreria::where('nombre', $nombreLibreria)->firstOrFail();
+        $lecturas = $libreria->lecturas()->with('libro')->get();
+        $libros = $libreria->libros;
+
+        return view('librerias.libros', compact('libros', 'libreria', 'lecturas', 'perfil'));
+    }
+
 
 
 
@@ -79,12 +96,17 @@ class LibreriaController extends Controller
     public function abrirLibreria($nombre)
     {
         // Obtener la librería y sus libros relacionados
-        $libreria = Libreria::with('lecturas')->where('nombre', $nombre)->firstOrFail();
+        if ($nombre == 'todos') {
+            $librerias  = Libreria::with('lecturas')->get();
+        } else {
+            $librerias = Libreria::with('lecturas')->where('nombre', $nombre)->firstOrFail();
+        }
         $perfil = Auth::guard('lector')->user();
 
         // Retornar la vista con la librería y sus libros
-        return view('librerias.lecturas', compact('libreria', 'perfil'));
+        return view('librerias.lecturas', compact('librerias', 'perfil'));
     }
+
 
 
 

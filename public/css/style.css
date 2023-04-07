@@ -350,6 +350,16 @@ div.col {
 }
 
 
+.link-libreria{
+  color:black ;
+  text-decoration: none;
+}
+
+.link-libreria:hover{
+  color: #007c82;
+  text-decoration: underline;
+}
+
 
 
 
@@ -358,6 +368,15 @@ div.col {
   font-size: small;
   color: grey;
 }
+
+
+.btn-extra-sm {
+  padding: 0.12rem 0.26rem !important;
+  line-height: 1!important;
+  margin-left: 0.4rem;
+
+}
+
 
 
 
