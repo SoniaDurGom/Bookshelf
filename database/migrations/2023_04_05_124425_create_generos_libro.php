@@ -14,10 +14,10 @@ return new class extends Migration
         Schema::create('generos_libro', function (Blueprint $table) {
             $table->id();
             $table->unsignedBigInteger('genero_id');
-            $table->foreign('genero_id')->references('id')->on('generos');
+            $table->foreign('genero_id')->references('id')->on('generos')->onDelete('cascade');;
 
             $table->unsignedBigInteger('libro_id');
-            $table->foreign('libro_id')->references('id')->on('libros');
+            $table->foreign('libro_id')->references('id')->on('libros')->onDelete('cascade');;
             $table->timestamps();
 
            

@@ -16,7 +16,7 @@ return new class extends Migration
             $table->string('nombre');
             $table->integer('numero_libros')->default(0);;
             $table->unsignedBigInteger('lector_id');
-            $table->foreign('lector_id')->references('id')->on('lectores');
+            $table->foreign('lector_id')->references('id')->on('lectores')->onDelete('cascade');;
             $table->timestamps();
         });
         

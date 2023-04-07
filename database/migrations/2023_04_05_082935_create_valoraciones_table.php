@@ -15,8 +15,8 @@ return new class extends Migration
             $table->id();
             $table->integer('puntuacion');
             $table->text('comentario')->nullable();
-            $table->foreignId('libro_id')->constrained('libros');
-            $table->foreignId('lector_id')->constrained('lectores');
+            $table->foreignId('libro_id')->constrained('libros')->onDelete('cascade');;
+            $table->foreignId('lector_id')->constrained('lectores')->onDelete('cascade');;
             // $table->unique(['libro_id', 'lector_id']); //Solo una Valoracion por par libro-usuario
             $table->timestamps();
         });

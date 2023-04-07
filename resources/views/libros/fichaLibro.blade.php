@@ -23,7 +23,7 @@
                             <div class="col-6">
                                 {{-- Autor/es --}}
                                 @foreach($libro->autorSinCuenta as $autor)
-                                    <h5><a class="card-text link_autor"> {{ $autor->apellidos }}, {{ $autor->nombre }} </a> </h5>
+                                    <h5 class="card-text link_autor"> {{ $autor->apellidos }}, {{ $autor->nombre }}  </h5>
                                 @endforeach
 
                                 {{-- Generos , buble--}}

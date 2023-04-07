@@ -20,12 +20,13 @@ return new class extends Migration
         // });
         Schema::create('autores', function (Blueprint $table) {
             $table->id();
-            $table->unsignedBigInteger('perfil_id');
+            
             $table->text('biografia')->nullable();
             $table->boolean('aprobado')->default(false);
             $table->timestamps();
         
             // $table->foreign('perfil_id')->references('id')->on('perfiles');
+            $table->unsignedBigInteger('perfil_id');
             $table->foreign('perfil_id')->references('id')->on('perfiles')->onDelete('cascade');
         });
         

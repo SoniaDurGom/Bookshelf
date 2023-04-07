@@ -158,8 +158,17 @@ class LectorController extends Controller
             Storage::disk('public')->delete($perfil->foto);
         }
 
+       // Eliminar las relaciones entre el perfil y el resto de tablas
+        $lector->generosFavoritos()->detach();
+        // $lector->valoraciones()->detach();
+        // $lector->librerias()->detach();
+        // $lector->lecturas()->detach();
+        // $lector->reto()->detach();
+
+
         // Eliminar el perfil del lector y todas las relaciones
         $perfil->delete();
+
 
         // Desautenticar al lector y redireccionarlo al formulario de inicio de sesión
         Auth::guard('lector')->logout();

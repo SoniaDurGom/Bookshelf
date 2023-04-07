@@ -17,7 +17,7 @@ return new class extends Migration
             $table->integer('libros_objetivo')->default(0);
             $table->integer('libros_leidos')->default(0);
             $table->boolean('completado')->default(false);
-            $table->foreignId('lector_id')->constrained('lectores');
+            $table->foreignId('lector_id')->constrained('lectores')->onDelete('cascade');;
             $table->timestamps();
         });
     }

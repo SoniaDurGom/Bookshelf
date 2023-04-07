@@ -19,9 +19,9 @@ return new class extends Migration
             $table->enum('estado', ['Pendiente', 'Leyendo', 'Leido']);
             //Foreings
             $table->unsignedBigInteger('libro_id');
-            $table->foreign('libro_id')->references('id')->on('libros');
+            $table->foreign('libro_id')->references('id')->on('libros')->onDelete('cascade');;
             $table->unsignedBigInteger('lector_id');
-            $table->foreign('lector_id')->references('id')->on('lectores');
+            $table->foreign('lector_id')->references('id')->on('lectores')->onDelete('cascade');;
             $table->timestamps();
         });
         
