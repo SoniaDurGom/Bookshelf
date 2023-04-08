@@ -102,8 +102,8 @@ Route::middleware('auth:lector')->group(function () {
     Route::post('/lectores/panel-control', [GeneroController::class, 'guardarFavoritos'])->name('generos.guardar-favoritos');
 
 
-    Route::get('/librerias', [LibreriaController::class, 'mostrarLibrerias'])->name('librerias.mostrar');
-    Route::get('/librerias/{libreria}', [LibreriaController::class, 'abrirLibreria'])->name('librerias.libros');
+    Route::get('/librerias/{libreria}', [LibreriaController::class, 'abrirLibreria'])->name('librerias.mostrar');
+    // Route::get('/librerias/{libreria}', [LibreriaController::class, 'abrirLibreria'])->name('librerias.libros');
     Route::post('/librerias/nueva', [LibreriaController::class, 'crearLibreria'])->name('librerias.crearLibreria');
     Route::delete('/librerias/borrar/{libreria}', [LibreriaController::class, 'borrarLibreria'])->name('librerias.borrarLibreria');
 

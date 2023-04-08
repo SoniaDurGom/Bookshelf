@@ -29,5 +29,29 @@ class LecturaSeeder extends Seeder
             $lectura->libro_id = $libro->id;
             $lectura->save();
         }
+
+        $libro = Libro::find(2);
+        $libreria = Libreria::find(2);
+        foreach ($lectores as $lector) {
+            $lectura = new Lectura;
+            $lectura->fecha_inicio = '2022-01-01';
+            $lectura->estado = 'Pendiente';
+            $lectura->libreria_id = $libreria->id;
+            $lectura->lector_id = $lector->id;
+            $lectura->libro_id = $libro->id;
+            $lectura->save();
+        }
+
+        $libro = Libro::find(3);
+        $libreria = Libreria::find(3);
+        foreach ($lectores as $lector) {
+            $lectura = new Lectura;
+            $lectura->fecha_inicio = '2022-01-01';
+            $lectura->estado = 'Pendiente';
+            $lectura->libreria_id = $libreria->id;
+            $lectura->lector_id = $lector->id;
+            $lectura->libro_id = $libro->id;
+            $lectura->save();
+        }
     }
 }

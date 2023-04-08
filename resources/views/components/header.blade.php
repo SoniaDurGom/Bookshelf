@@ -13,7 +13,7 @@
                 <a class="nav-link active" aria-current="page" href="{{ route('index') }}">Inicio</a>
               </li>
               <li class="nav-item">
-                <a class="nav-link" href="{{route('librerias.mostrar')}}">Mis librerias</a>
+                <a class="nav-link" href="{{ route('librerias.mostrar', 'todos') }}">Mis librerias</a>
               </li>
               
               <li class="nav-item dropdown">
