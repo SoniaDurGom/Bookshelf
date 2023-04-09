@@ -113,14 +113,43 @@ class LectorController extends Controller
      */
     public function panelControl()
     {
+        $perfil = Auth::guard('lector')->user();
+        $generos = Genero::all();
+     
+        // Sacar libros favoritos: hasta 10 libros aleatorios que el Lector haya Valorado con 5 estrellas.
+        // Enlace "más" que lleva a librerias-leido
         
-        $lector = Auth::guard('lector')->user();
-        $generos= Genero::all();
-        return view('lectores_panelControl', [
-            'perfil' => $lector,
-            'generos'=> $generos,
-        ]);
+        $librosFavoritos = [];
+        foreach ($perfil->lecturas as $lectura) {
+            foreach ($lectura->libro->valoraciones as $valoracion) {
+                if ($valoracion->puntuacion == 5) {
+                    $librosFavoritos[] = $lectura->libro;
+                    break; // Salir del bucle una vez se encuentre una valoración de 5 estrellas
+                }
+            }
+            if (count($librosFavoritos) >= 10) {
+                break; // Salir del bucle una vez se hayan encontrado 10 libros favoritos
+            }
+        }
+        
+    
+        // Mostrar nombre y número de libros de las librerías del usuario.
+        // Mostrar hasta 8 librerías, y enlace a más que lleva a la página de librerías.
+      
+        $libreriasUsuario = $perfil->librerias;
+    
+        // Mostrar hasta 10 libros aleatorios de la librería "Leyendo" del lector.
+        $leyendo = Libreria::where('nombre', 'Leyendo')->first();
+        $lecturasLeyendo = $leyendo->lecturas()->inRandomOrder()->take(10)->get();
+
+
+      
+       
+    
+        return view('lectores_panelControl', compact('perfil', 'generos', 'librosFavoritos', 'libreriasUsuario', 'lecturasLeyendo'));
+      
     }
+    
 
 
 
@@ -169,7 +198,7 @@ class LectorController extends Controller
         }
 
        // Eliminar las relaciones entre el perfil y sus generos favoritos
-        $lector->generosFavoritos()->detach();
+        $lector->generosFavoritos->detach();
 
         // Eliminar el perfil del lector y todas las relaciones
         $perfil->delete();
@@ -218,10 +247,6 @@ class LectorController extends Controller
 
 
 
-    //TODO: 
-    // función en el controlador de lectores que obtiene los géneros favoritos del lector y los libros mejor valorados,
-    //  filtra los libros por género y los ordena por popularidad para finalmente mostrar 
-    //  la recomendación en la vista correspondiente.
 
 
 

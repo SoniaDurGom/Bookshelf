@@ -70,35 +70,75 @@
 
                             <wbr>
                             
-                            <div class="row">
-                                 {{-- Libros favoritos --}}
-                                <h5>Libros favoritos</h5>
-                                <hr>
-                               
-                               
+                                <div class="row">
+                                    <h5>Libros favoritos</h5>
+                                    <hr>
+                                    @foreach($librosFavoritos as $libro)
+                                        <div class="col-6 col-sm-4 col-md-3 col-lg-2 mb-3">
+                                            <a href="{{ route('libros.fichaLibro', $libro->id) }}">
+                                                <img class="card-img-top" src="{{ asset($libro->portada) }}" alt="Portada de {{ $libro->titulo }}">
+                                            </a>  
+                                        </div>
+                                    @endforeach
+                                    <div class="col-12 text-center">
+                                        <a href="{{ route('librerias.mostrar', 'todos') }}"class="btn btn-primary">Ver más</a>
+                                    </div>
+                                </div>
                                 
-                            </div>
 
                             <wbr>
                             
-                            <div class="row">
-                                 {{-- Librerias --}}
-                                <h5>Librerias</h5>
-                                <hr>
-                                   
-                    
-                                    
-                            </div>
+                                <div class="row justify-content-center">
+                                    <h5>Librerías</h5>
+                                    <hr>
+                                    @foreach($libreriasUsuario as $libreria)
+                                        <div class="col-6 col-md-3 col-lg-2 col-lg-2 mb-3">
+                                            <div class="card-body p-2">
+                                                    <a href="{{ route('librerias.mostrar', $libreria->nombre) }}" class="card-title">{{ $libreria->nombre }}</a>
+                                                    <p class="card-text">{{ count($libreria->lecturas) }} lecturas</p>
+                                            </div>
+                                        </div>
+                                    @endforeach
+                                    <div class="col-12 text-center">
+                                        <a href="{{ route('librerias.mostrar', 'todos') }}" class="btn btn-primary">Ver más</a>
+                                    </div>
+                                </div>
+                                
                             <wbr>
-                            
+                        
+
                             <div class="row">
-                                {{-- Leyendo actualmente --}}
                                 <h5>Leyendo actualmente</h5>
                                 <hr>
-                                   
-                                   
-                                    
+                                @foreach($lecturasLeyendo as $lectura)
+                                    <div class="col-md-6 col-lg-4">
+                                        <div class="mb-3">
+                                            <div class="row no-gutters">
+                                                <div class="col-4">
+                                                    <img src="{{ asset($lectura->libro->portada) }}" class="card-img" alt="{{ $lectura->libro->titulo }}">
+                                                </div>
+                                                <div class="col-8">
+                                                    <div class="card-body">
+                                                        <h5 class="card-title">{{ $lectura->libro->titulo }}</h5>
+                                                        <div class="progress">
+                                                            <div class="progress-bar progress-bar-custom" role="progressbar" style="width: {{ $lectura->paginas_leidas / $lectura->libro->numero_paginas * 100 }}%;" aria-valuenow="{{ $lectura->paginas_leidas }}" aria-valuemin="0" aria-valuemax="{{ $lectura->libro->numero_paginas }}"></div>
+                                                          </div>
+                                                          <p class="text-center mb-0">{{ $lectura->paginas_leidas }} / {{ $lectura->libro->numero_paginas }} páginas</p>
+                                                          
+                                                          
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                @endforeach
                             </div>
+
+
+
+
+
+
     
                             <wbr>
                                 

@@ -44,7 +44,7 @@ class HomeController extends Controller
         $lector = Auth::guard('lector')->user();
         $lector_id=$lector->id;
         // Obtener los géneros favoritos del lector
-        $generos = $lector->generosFavoritos()->pluck('generos.id');
+        $generos = $lector->generosFavoritos->pluck('generos.id');
         
         //Libros con los generos favoritos de lector y con valoraciones superiores a 4
         $libros_recomendados = Libro::with(['generos', 'valoraciones'])
@@ -71,7 +71,8 @@ class HomeController extends Controller
 
         
        //librerias
-       $librerias= Libreria::all();
+       //Todas las librerias de un USUARIO LECTOR
+       $librerias= $perfil->librerias;
        $numero_de_lecturas_por_libreria = [];
         foreach ($librerias as $libreria) {
             $numero_de_lecturas = Lectura::where('libreria_id', $libreria->id)->count();

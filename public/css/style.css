@@ -382,4 +382,9 @@ div.col {
   max-width: 25% !important;
 }
 
+.progress-bar-custom {
+  background-color: #00adb5 !important;
+  color: #fff !important;
+}
+
 

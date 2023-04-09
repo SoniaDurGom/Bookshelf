@@ -102,7 +102,7 @@ class LibreriaController extends Controller
         } else {
             $librerias = Libreria::with('lecturas')->where('nombre', $nombre)->firstOrFail(); //La libreria que coincide con el nombre
         }
-        $allLibrerias = Libreria::all(); 
+        $allLibrerias = $perfil->librerias; 
 
         $numero_de_lecturas_por_libreria = [];
         foreach ($allLibrerias as $libreria) {
