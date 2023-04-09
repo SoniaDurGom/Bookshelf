@@ -45,9 +45,6 @@ class Libro extends Model
         return $this->belongsToMany(Autor_Sin_Cuenta::class, 'autores_libros', 'libro_id', 'autor_id');
     }
 
-
-   
-
     //1 libro tiene varias fichas de lectura, pertenecientes a los usuarios
     public function lectura()
     {

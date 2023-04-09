@@ -10,10 +10,16 @@
                     <aside>
                         <h2>Librerias</h2>
                         <ul>
-                            
+                            <div>
+                                <a class="link-libreria" href="{{ route('librerias.mostrar', 'todos') }}">
+                                    ({{$num_total_lecturas}}) Todos
+                                </a>
+                            </div>
                             @foreach($librerias as $libreria)
                             <div class="d-flex align-items-center">
-                                <a class="link-libreria mr-2" href="{{ route('librerias.mostrar', $libreria->nombre) }}">{{ $libreria->nombre }}</a> 
+                                <a class="link-libreria mr-2" href="{{ route('librerias.mostrar', $libreria->nombre) }}">
+                                    ({{$numero_de_lecturas_por_libreria[$libreria->id]}}) {{ $libreria->nombre }}
+                                </a> 
                                 @if($libreria->nombre != 'Leyendo' && $libreria->nombre != 'Leído' && $libreria->nombre != 'Quiero leer')
                                     <form class="form-inline" action="{{ route('librerias.borrarLibreria', $libreria->id) }}" method="POST">
                                         @csrf
@@ -71,11 +77,15 @@
                     <h2>Librerias</h2>
                     <ul>
                         <div>
-                            <a class="link-libreria" href="{{ route('librerias.mostrar', 'todos') }}">Todos</a>
+                            <a class="link-libreria" href="{{ route('librerias.mostrar', 'todos') }}">
+                                ({{$num_total_lecturas}}) Todos
+                            </a>
                         </div> 
                         @foreach($allLibrerias as $libreria)
                         <div class="d-flex align-items-center">
-                            <a class="link-libreria mr-2" href="{{ route('librerias.mostrar', $libreria->nombre) }}">{{ $libreria->nombre }}</a> 
+                            <a class="link-libreria mr-2" href="{{ route('librerias.mostrar', $libreria->nombre) }}">
+                                ({{$numero_de_lecturas_por_libreria[$libreria->id]}}) {{ $libreria->nombre }}
+                            </a> 
                        
                             @if($libreria->nombre != 'Leyendo' && $libreria->nombre != 'Leído' && $libreria->nombre != 'Quiero leer')
                             {{-- {{dd($librerias->id)}} --}}

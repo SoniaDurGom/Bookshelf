@@ -9,7 +9,7 @@
         <div class="card mb-4">
             <div class="card-body row">
                 {{-- Se muestra un maximo de 50 --}}
-                @foreach ($recomendaciones->shuffle()->take(50) as $libro) 
+                @foreach ($libros_recomendados->shuffle()->take(50) as $libro) 
                     <div class="col-md-3 col-lg-2 mb-3">
                         <div>
                             <img class="card-img-top" src="{{ $libro->portada }}" alt="{{ $libro->titulo }}">

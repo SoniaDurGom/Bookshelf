@@ -104,27 +104,33 @@ class LibroController extends Controller
     {
         // Obtener el lector logueado
         $perfil = Auth::guard('lector')->user();
-
+        $lector = $perfil;
+        $lector_id=$lector->id;
         // Obtener los géneros favoritos del lector
-        $generos = $perfil->generosFavoritos()->pluck('genero_id');
-
-        // Obtener los libros con puntuación de 4 estrellas o más
-        $libros = Libro::with(['generos', 'valoraciones'])
+        $generos = $lector->generosFavoritos()->pluck('generos.id');
+        
+        //Libros con los generos favoritos de lector y con valoraciones superiores a 4
+        $libros_recomendados = Libro::with(['generos', 'valoraciones'])
             ->whereHas('valoraciones', function($query) {
                 $query->where('puntuacion', '>=', 4);
             })->get();
-
-        // Filtrar los libros por géneros favoritos del lector
-        $recomendaciones = $libros->filter(function($libro) use ($generos) {
-            return $libro->generos->whereIn('id', $generos)->count() > 0;
-        });
+    
+        //Libros en todas las librerias del lector actual
+        $libros_en_librerias = Libro::whereIn('id', function ($query) use ($lector_id) {
+            $query->select('libro_id')->from('lecturas')->whereIn('libreria_id', function ($query) use ($lector_id) {
+                $query->select('id')->from('librerias')->where('lector_id', $lector_id);
+            });
+        })->get();
+    
+        //Se obtiene la diferencia entre los libros recomendados y los libros que ya estan en alguna libreria.
+        $libros_recomendados = $libros_recomendados->diff($libros_en_librerias);
 
         // Retornar la vista con las recomendaciones
-        return view('libros.recomendaciones', compact('recomendaciones', 'perfil'));
+        return view('libros.recomendaciones', compact('libros_recomendados', 'perfil'));
     }
     
     
-
+   
 
 
    

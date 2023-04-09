@@ -95,18 +95,27 @@ class LibreriaController extends Controller
     // Saca los libros de una libreria del lector logueado
     public function abrirLibreria($nombre)
     {
+        $perfil = Auth::guard('lector')->user();
         // Obtener la librería y sus libros relacionados
         if ($nombre == 'todos') {
             $librerias  = Libreria::with('lecturas')->get(); //Array con todas las librerias
         } else {
             $librerias = Libreria::with('lecturas')->where('nombre', $nombre)->firstOrFail(); //La libreria que coincide con el nombre
         }
-        $allLibrerias = Libreria::all(); // obtener solo los nombres de las librerías
+        $allLibrerias = Libreria::all(); 
 
-        $perfil = Auth::guard('lector')->user();
+        $numero_de_lecturas_por_libreria = [];
+        foreach ($allLibrerias as $libreria) {
+            $numero_de_lecturas = Lectura::where('libreria_id', $libreria->id)->count();
+            $numero_de_lecturas_por_libreria[$libreria->id] = $numero_de_lecturas;
+        }
+        $num_total_lecturas = $perfil->lecturas->count();
+        // dd($num_total_lecturas);
+
+       
 
         // Retornar la vista con la librería y sus libros
-        return view('librerias.libreriasLector', compact('librerias', 'perfil', 'allLibrerias'));
+        return view('librerias.libreriasLector', compact('librerias', 'perfil', 'allLibrerias', 'num_total_lecturas', 'numero_de_lecturas_por_libreria'));
     }
 
 

@@ -19,4 +19,9 @@ class Autor_Sin_Cuenta extends Model
     {
         return $this->belongsToMany(Libro::class, 'autores_libros', 'autor_id', 'libro_id')->withTimestamps();
     }
+
+    public function getNombreCompletoAttribute()
+    {
+        return $this->nombre . ' ' . $this->apellidos;
+    }
 }

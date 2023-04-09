@@ -2,7 +2,12 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Autor;
+use App\Models\Lector;
+use App\Models\Lectura;
+use App\Models\Libreria;
 use App\Models\Libro;
+use App\Models\Perfil;
 use App\Models\Reto;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,36 +31,61 @@ class HomeController extends Controller
      */
     public function index()
     {
-        $lector = Auth::guard('lector')->user();
-        // $librerias-> sacar 3
-        $leyendo = $lector->librerias->where('nombre', 'Leyendo')->first();
-        $lecturasLeyendo = $leyendo->lecturas()->inRandomOrder()->take(1)->get();
-        
-
-        $pendientes = $lector->librerias->where('nombre', 'Pendientes')->first();
-        $lecturasPendientes = $pendientes->lecturas()->inRandomOrder()->take(1)->get();
-
-        // $lecturasPendientes = $lecturasPendientes->chunk(1);
-
-        // Obtener el lector logueado
         $perfil = Auth::guard('lector')->user();
+        // $librerias-> sacar 3
+        $leyendo = Libreria::where('nombre', 'Leyendo')->first();
+        $lecturasLeyendo = $leyendo->lecturas()->inRandomOrder()->take(3)->get();
+       
+        $pendientes = Libreria::where('nombre', 'Quiero Leer')->first();
+        $lecturasPendientes = $pendientes->lecturas()->inRandomOrder()->take(6)->get();
+        
+       
+        // Obtener el lector logueado
+        $lector = Auth::guard('lector')->user();
+        $lector_id=$lector->id;
         // Obtener los géneros favoritos del lector
-        $generos = $perfil->generosFavoritos->pluck('genero_id');
-        // Obtener los libros con puntuación de 4 estrellas o más
-        $libros = Libro::with(['generos', 'valoraciones'])
+        $generos = $lector->generosFavoritos()->pluck('generos.id');
+        
+        //Libros con los generos favoritos de lector y con valoraciones superiores a 4
+        $libros_recomendados = Libro::with(['generos', 'valoraciones'])
             ->whereHas('valoraciones', function($query) {
                 $query->where('puntuacion', '>=', 4);
-            })->inRandomOrder()->take(1)->get();
-        // Filtrar los libros por géneros favoritos del lector
-        $recomendacion = $libros->filter(function($libro) use ($generos) {
-            return $libro->generos->whereIn('id', $generos)->count() > 0;
-        });
+            })->get();
 
+        //Libros en todas las librerias del lector actual
+        $libros_en_librerias = Libro::whereIn('id', function ($query) use ($lector_id) {
+            $query->select('libro_id')->from('lecturas')->whereIn('libreria_id', function ($query) use ($lector_id) {
+                $query->select('id')->from('librerias')->where('lector_id', $lector_id);
+            });
+        })->get();
+
+        //Se obtiene la diferencia entre los libros recomendados y los libros que ya estan en alguna libreria.
+        $libros_recomendados = $libros_recomendados->diff($libros_en_librerias);
+        // $libro_aleatorio = $libros_recomendados->random();
+        $autores_con_perfil = Autor::has('perfil')->get();
+
+        // dd($libro_aleatorio);
+
+
+
+
+        
+       //librerias
+       $librerias= Libreria::all();
+       $numero_de_lecturas_por_libreria = [];
+        foreach ($librerias as $libreria) {
+            $numero_de_lecturas = Lectura::where('libreria_id', $libreria->id)->count();
+            $numero_de_lecturas_por_libreria[$libreria->id] = $numero_de_lecturas;
+        }
+        $num_total_lecturas = $perfil->lecturas->count();
+
+        
+     
 
         // $reto
         $reto= Reto::all();
 
-         return view('home', compact('recomendacion', 'lecturasLeyendo', 'lecturasPendientes','reto','perfil'));
+         return view('home', compact('autores_con_perfil','libros_recomendados', 'lecturasLeyendo', 'lecturasPendientes','librerias','numero_de_lecturas_por_libreria','num_total_lecturas','reto','perfil'));
     }
 
    
