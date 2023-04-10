@@ -98,11 +98,12 @@ class LibreriaController extends Controller
         $perfil = Auth::guard('lector')->user();
         // Obtener la librería y sus libros relacionados
         if ($nombre == 'todos') {
-            $librerias  = Libreria::with('lecturas')->get(); //Array con todas las librerias
+            $libreriaSeleccionada  = $perfil->librerias; //Array con todas las librerias
         } else {
-            $librerias = Libreria::with('lecturas')->where('nombre', $nombre)->firstOrFail(); //La libreria que coincide con el nombre
+            $libreriaSeleccionada = $perfil->librerias->where('nombre', $nombre)->firstOrFail(); //La libreria que coincide con el nombre
+          
         }
-        $allLibrerias = $perfil->librerias; 
+        $allLibrerias = $perfil->librerias; //Todas las librerias del autor
 
         $numero_de_lecturas_por_libreria = [];
         foreach ($allLibrerias as $libreria) {
@@ -115,7 +116,7 @@ class LibreriaController extends Controller
        
 
         // Retornar la vista con la librería y sus libros
-        return view('librerias.libreriasLector', compact('librerias', 'perfil', 'allLibrerias', 'num_total_lecturas', 'numero_de_lecturas_por_libreria'));
+        return view('librerias.libreriasLector', compact('libreriaSeleccionada', 'perfil', 'allLibrerias', 'num_total_lecturas', 'numero_de_lecturas_por_libreria'));
     }
 
 

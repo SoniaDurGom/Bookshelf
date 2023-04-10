@@ -388,3 +388,7 @@ div.col {
 }
 
 
+.link-libreria.selected {
+  color: #007c82;
+  font-weight: bold;
+}

@@ -2,7 +2,7 @@
 @extends('layouts.app')
 
 @section('content')
-    @if ($librerias instanceof Illuminate\Database\Eloquent\Collection)
+    @if ($libreriaSeleccionada instanceof Illuminate\Database\Eloquent\Collection)
         <!-- Si se seleccionaron todas las librerías -->
         <div class="container-fluid">
             <div class="row">
@@ -11,11 +11,11 @@
                         <h2>Librerias</h2>
                         <ul>
                             <div>
-                                <a class="link-libreria" href="{{ route('librerias.mostrar', 'todos') }}">
+                                <a class="link-libreria selected" href="{{ route('librerias.mostrar', 'todos') }}">
                                     ({{$num_total_lecturas}}) Todos
                                 </a>
                             </div>
-                            @foreach($librerias as $libreria)
+                            @foreach($libreriaSeleccionada as $libreria)
                             <div class="d-flex align-items-center">
                                 <a class="link-libreria mr-2" href="{{ route('librerias.mostrar', $libreria->nombre) }}">
                                     ({{$numero_de_lecturas_por_libreria[$libreria->id]}}) {{ $libreria->nombre }}
@@ -51,7 +51,7 @@
                 <div class="col-12 col-lg-7 col-xl-8 ml-5">
                     <div class="card mb-4">
                         <div class="row">
-                            @foreach ($librerias as $libreria)
+                            @foreach ($libreriaSeleccionada as $libreria)
                                 {{-- <h3>{{ $libreria->nombre }}</h3> --}}
                                 @foreach ($libreria->lecturas as $lectura)
                                         <div class="col-6 col-sm-3 col-lg-2 mb-3">
@@ -83,7 +83,7 @@
                         </div> 
                         @foreach($allLibrerias as $libreria)
                         <div class="d-flex align-items-center">
-                            <a class="link-libreria mr-2" href="{{ route('librerias.mostrar', $libreria->nombre) }}">
+                            <a class="link-libreria mr-2{{ $libreriaSeleccionada->nombre == $libreria->nombre ? ' selected' : '' }} " href="{{ route('librerias.mostrar', $libreria->nombre) }}">
                                 ({{$numero_de_lecturas_por_libreria[$libreria->id]}}) {{ $libreria->nombre }}
                             </a> 
                        
@@ -120,13 +120,13 @@
             <div class="col-12 col-lg-7 col-xl-8 ml-5">
                 <div class="card mb-4">
                     <div class="row">
-                        @if (count($librerias->lecturas) == 0)
+                        @if (count($libreriaSeleccionada->lecturas) == 0)
                             <div class="text-center">
                                 <p>Esta libreria aún no tiene libros <a class="link" href="{{route('libros.index')}}"> Explorar</a> </p>
                             </div>
                         @endif
             
-                        @foreach ($librerias->lecturas as $lectura)
+                        @foreach ($libreriaSeleccionada->lecturas as $lectura)
                         <div class="col-6 col-sm-3 col-lg-2 mb-3">
                             <div>
                                 {{-- !Cambiar a ficha lectura--}}

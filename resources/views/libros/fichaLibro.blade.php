@@ -9,7 +9,7 @@
                     <img src="{{ $libro->portada }}" class="portada_libro_ficha" alt="{{ $libro->titulo }}">
                     <wbr>
                     <div>
-                        {{--TODO Despliega las librerias --}}
+                        {{--TODO: Despliega las librerias --}}
                         <button class="btn btn-primary" >Añadir a libreria</button> 
                     </div>
                     
@@ -23,7 +23,7 @@
                             <div class="col-6">
                                 {{-- Autor/es --}}
                                 @foreach($libro->autorSinCuenta as $autor)
-                                    <h5 class="card-text link_autor"> {{ $autor->apellidos }}, {{ $autor->nombre }}  </h5>
+                                    <h5 class="card-text link_autor">  {{ $autor->nombre }} {{ $autor->apellidos }} </h5>
                                 @endforeach
 
                                 {{-- Generos , buble--}}
@@ -114,6 +114,13 @@
             </div>
 
             <wbr>
+
+                {{--Todo: Ficha de lectura del usuario Lector --}}
+                {{-- Fecha de inicio, páginas leidas, fecha de fin (), estado de la lectura (cambio de estado cuando las páginas leidas ), 
+                    ¿notas hasta 1500 caracteres? , libreria en la que está--}}
+
+
+
 
                 <hr>
                 <div class="row">

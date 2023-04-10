@@ -32,16 +32,16 @@
                                         <h5 class="card-title small">{{$lectura->libro->titulo}}</h5>
                                         @foreach($lectura->libro->autorSinCuenta as $autor)
                                             @foreach($autores_con_perfil as $autor_con_perfil)
-                                                @if($autor->nombreCompleto == $autor_con_perfil->name)
+                                                @if($autor->nombreCompleto == $autor_con_perfil->perfil->name)
                                                     <span class="link_autor small">
-                                                        <a class="link" href="">
-                                                            {{$autor_con_perfil->name}}
+                                                        <a class="link" href="#">
+                                                            {{$autor_con_perfil->perfil->name}}
                                                         </a> 
                                                     </span>
                                                     <br>
                                                     @break
                                                 @else
-                                                    <span class="link_autor small">{{ $autor->apellidos }}, {{ $autor->nombre }}</span> 
+                                                    <span class="link_autor small">{{ $autor->nombre }} {{ $autor->apellidos }} </span> 
                                                     <br>
                                                 @endif
                                             @endforeach
@@ -117,10 +117,10 @@
                                             <h5 class="card-title">{{ $libro->titulo }}</h5>
                                             @foreach($libro->autorSinCuenta as $autor)
                                                 @foreach($autores_con_perfil as $autor_con_perfil)
-                                                    @if($autor->nombreCompleto == $autor_con_perfil->name)
+                                                    @if($autor->nombreCompleto == $autor_con_perfil->perfil->name)
                                                         <p class="link_autor">
                                                             de <a class="link" href="">
-                                                                {{$autor_con_perfil->name}}
+                                                                {{$autor_con_perfil->perfil->name}}
                                                             </a> 
                                                         </p>
                                                         @break
