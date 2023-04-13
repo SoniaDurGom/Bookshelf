@@ -275,13 +275,18 @@ div.col {
 }
 
 
-.img_index{
+.img-index{
   border-radius: 30px; 
   max-width: 300px;
   height: 400px;
 }
 
- 
+#img-reto{
+  border-radius: 10px; 
+  max-width: 130px;
+  height: 130px;
+}
+
 
   
 
@@ -292,6 +297,7 @@ div.col {
   border-right: 1px solid #ccc; /* Agregar una línea vertical */
   
 }
+
 
 
 
@@ -392,3 +398,24 @@ div.col {
   color: #007c82;
   font-weight: bold;
 }
+
+.txt-link {
+  color:black;
+  text-decoration: none !important;
+
+}
+.txt-link:hover {
+  color:#007c82;
+  text-decoration: none !important;
+
+}
+
+
+
+
+
+
+
+
+
+/* 

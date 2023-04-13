@@ -115,17 +115,20 @@
                                         <div class="mb-3">
                                             <div class="row no-gutters">
                                                 <div class="col-4">
-                                                    <img src="{{ asset($lectura->libro->portada) }}" class="card-img" alt="{{ $lectura->libro->titulo }}">
+                                                    <a href="{{ route('libros.fichaLibro', $lectura->libro->id) }}"> 
+                                                        <img class="card-img-top" src="{{ $lectura->libro->portada }}" alt="{{ $lectura->libro->titulo }}">
+                                                    </a> 
                                                 </div>
                                                 <div class="col-8">
                                                     <div class="card-body">
-                                                        <h5 class="card-title">{{ $lectura->libro->titulo }}</h5>
+                                                        <a class="txt-link" href="{{ route('libros.fichaLibro', $lectura->libro->id) }}"> 
+                                                            <h5 class="card-title">{{ $lectura->libro->titulo }}</h5>
+                                                        </a> 
                                                         <div class="progress">
                                                             <div class="progress-bar progress-bar-custom" role="progressbar" style="width: {{ $lectura->paginas_leidas / $lectura->libro->numero_paginas * 100 }}%;" aria-valuenow="{{ $lectura->paginas_leidas }}" aria-valuemin="0" aria-valuemax="{{ $lectura->libro->numero_paginas }}"></div>
-                                                          </div>
-                                                          <p class="text-center mb-0">{{ $lectura->paginas_leidas }} / {{ $lectura->libro->numero_paginas }} páginas</p>
-                                                          
-                                                          
+                                                        </div>
+                                                      <p class="text-center mb-0">{{ $lectura->paginas_leidas }} / {{ $lectura->libro->numero_paginas }} páginas</p>
+                                                              
                                                     </div>
                                                 </div>
                                             </div>

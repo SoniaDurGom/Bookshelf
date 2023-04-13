@@ -6,6 +6,7 @@ use App\Models\Genero;
 use App\Models\Lector;
 use App\Models\Libreria;
 use App\Models\Perfil;
+use App\Models\Reto;
 use Illuminate\Http\Request;
 
 use Illuminate\Support\Facades\Auth;
@@ -15,6 +16,13 @@ use Illuminate\Support\Facades\Storage;//Para subir fotos
 
 class LectorController extends Controller
 {
+
+
+
+   
+
+
+
     /**
      * Muestra el formulario de registro de lectores.
      *
@@ -102,6 +110,7 @@ class LectorController extends Controller
         // Autenticar al lector y redireccionarlo a su panel de control.
 
         Auth::guard('lector')->login($lector);
+       
 
         return redirect()->route('lectores.panelControl');
     }
@@ -245,7 +254,27 @@ class LectorController extends Controller
     }
 
 
+    // public function retoActual()
+    // {
+    //     $lector = Auth::guard('lector')->user();
+    //     $anio = date('Y');
+    //     $reto = $this->reto()->where('anio', $anio)->first();
+    
+    //     if (!$reto) { //Si no existe un reto para el año actual se crea uno con el año actual
 
+    //         $reto = $this->reto()->create([
+    //             'anio' => date('Y'),
+    //             'libros_objetivo' => 0,
+    //             'libros_leidos' => 0,
+    //             'lecturas_leidas' => 0,
+    //             'completado' => false,
+    //             'lector_id' => $lector->id,
+    //         ]);
+    //     }
+    
+    //     return $reto;
+    // }
+    
 
 
 

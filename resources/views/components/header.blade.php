@@ -36,7 +36,7 @@
                           @foreach(Auth::guard('lector')->user()->generosFavoritos as $genero)
                               <a class="dropdown-item dropdown-item-white" href="{{route('genero.index',$genero->nombre)}}">{{$genero->nombre}}</a>
                           @endforeach
-                          <a class="dropdown-item dropdown-item-white" href="{{route('libros.index')}}">Todos</a>
+                          {{-- <a class="dropdown-item dropdown-item-white" href="{{route('libros.index')}}">Todos</a> --}}
                       </div>
                     </div>
                   </li>

@@ -5,6 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 use Illuminate\Foundation\Auth\User as Authenticatable;
+use Illuminate\Support\Facades\Auth;
 
 class Lector extends Authenticatable
 {
@@ -26,7 +27,7 @@ class Lector extends Authenticatable
     //Un lector puede tener varios retos. Pero es uno al año.
     public function reto()
     {
-        return $this->hasMany(Reto::class);
+        return $this->hasOne(Reto::class);
     }
 
     //Un Lector tiene varias lecturas
@@ -52,6 +53,10 @@ class Lector extends Authenticatable
     {
         return $this->belongsToMany(Genero::class, 'lectores_generos')->withTimestamps();
     }
+
+
+  
+   
 
 
 

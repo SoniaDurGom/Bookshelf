@@ -7,6 +7,7 @@
     <title>Bookshelf</title>
     <link rel="shortcut icon" href="{{ asset('favicons/favicon.ico') }}">
     <link rel="stylesheet" href="{{ asset('css/style.css') }}">
+    <script src="{{ asset('js/btnReto.js') }}"></script>
 </head>
 <body>
     @extends('layouts.app')
@@ -98,7 +99,7 @@
 
                 {{-- Centro: ESPACIO RESERVADO PARA TABLO DE NOTICIAS --}}
                 <div class="col-xl-4 d-none d-xl-block">
-                    <img class="img_index" src="{{ asset('img/index_img.jpeg') }}" alt="Foto central" >
+                    <img class="img-index" src="{{ asset('img/index_img.jpeg') }}" alt="Foto central" >
                 </div>
                 
                 <hr class=" col-9 col-sm-8 d-block d-md-none">
@@ -162,11 +163,72 @@
 
                     <div class="col-9 col-sm-8">
                         <hr>
-                        <h5>Retos</h5>
-                        {{-- Si no se ha empezado un reto, mostrar para marcar el objetivo de libros --}}
-                        {{-- Si se ha empezado mostrar libros leidos de / objetivo --}}
-                        {{-- Imagen del reto anual, que se guarda en public/img --}}
-                        {{-- {{$reto}} --}}
+                        <h5>{{$reto->anio}} Reto de lectura</h5>
+                         {{-- Imagen del reto anual, que se guarda en public/img --}}
+                        {{-- <img id="img-reto" src="{{ asset('img/reto2023.jpeg') }}" alt="imagen reto literario año 2023"> --}}
+
+                        @if ($reto->libros_objetivo == 0)
+                            {{-- Si no se ha empezado un reto, mostrar para marcar el objetivo de libros --}}
+                            {{-- Mostrar formulario para marcar el objetivo de libros --}}
+                            <div class='row'>
+                                <div class='col-6'>
+                                    <div>
+                                        <img id="img-reto" src="{{ asset('img/reto2023.jpeg') }}" alt="imagen reto literario año 2023">
+                                    </div>
+                                </div>
+                                <div class="col-5">
+                                    <form action="{{ route('reto.marcarObjetivo') }}" method="POST">
+                                        @csrf
+                                        <div class="form-group">
+                                            <label for="libros_objetivo">Objetivo:</label>
+                                            <input type="number" name="libros_objetivo" id="libros_objetivo" class="form-control" min="1">
+                                        </div>
+                                        <br>
+                                        
+                                        <button type="submit" class="btn btn-primary" id="guardarBtn" disabled>Guardar</button>
+                                    </form>
+                                   
+                                    
+                                    
+                                </div>
+                            </div>
+                            
+                        @else
+                            {{-- Si se ha empezado mostrar libros leidos de / objetivo --}}
+                            {{-- Mostrar libros leidos de / objetivo --}}
+                            <div class='row'>
+                                <div class='col-6'>
+                                    <div>
+                                        <img id="img-reto" src="{{ asset('img/retoSinFondo.png') }}" alt="imagen reto literario año 2023">
+                                    </div>
+                                </div>
+                                <div class="col-6">
+                                    <br>
+                                    <div class="progress">
+                                        <div class="progress-bar progress-bar-custom" role="progressbar" style="width: {{ $reto->libros_leidos / $reto->libros_objetivo * 100 }}%;" aria-valuenow="{{ $reto->libros_leidos}}" aria-valuemin="0" aria-valuemax="{{ $reto->libros_objetivo  }}"></div>
+                                    </div>
+
+                                    {{-- <progress value="{{ $reto->libros_leidos }}" max="{{ $reto->libros_objetivo }}"></progress> --}}
+                                    <span>{{ $reto->libros_leidos }}/{{ $reto->libros_objetivo }} libros leidos</span> <br>
+                                    <a class="link" href="{{ route("reto.mostrar") }}"> Ver progreso</a>
+                                    
+                                </div>
+                            </div>
+
+
+
+
+
+
+                            
+                           
+                        
+                        @endif
+
+                    
+                       
+                       
+                       
                     </div>
                     
 

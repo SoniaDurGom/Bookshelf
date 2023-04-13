@@ -14,6 +14,7 @@ use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LectorController;
 use App\Http\Controllers\LibreriaController;
 use App\Http\Controllers\LibroController;
+use App\Http\Controllers\RetoController;
 use App\Http\Controllers\ValoracionesController;
 
 /*
@@ -106,6 +107,9 @@ Route::middleware('auth:lector')->group(function () {
     // Route::get('/librerias/{libreria}', [LibreriaController::class, 'abrirLibreria'])->name('librerias.libros');
     Route::post('/librerias/nueva', [LibreriaController::class, 'crearLibreria'])->name('librerias.crearLibreria');
     Route::delete('/librerias/borrar/{libreria}', [LibreriaController::class, 'borrarLibreria'])->name('librerias.borrarLibreria');
+
+    Route::get('/reto', [RetoController::class, 'mostrar'])->name('reto.mostrar');
+    Route::post('/reto', [RetoController::class, 'marcarObjetivo'])->name('reto.marcarObjetivo');
 
 
     

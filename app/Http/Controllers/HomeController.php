@@ -65,10 +65,6 @@ class HomeController extends Controller
         $autores_con_perfil = Autor::has('perfil')->get();
 
         // dd($libro_aleatorio);
-
-
-
-
         
        //librerias
        //Todas las librerias de un USUARIO LECTOR
@@ -80,11 +76,12 @@ class HomeController extends Controller
         }
         $num_total_lecturas = $perfil->lecturas->count();
 
-        
-     
 
-        // $reto
-        $reto= Reto::all();
+        // $reto actual: No se borra el anterior. Posibilidad de realizar estadisticas con los retos de años anteriores
+        $reto = Reto::where('lector_id', $perfil->id)
+            ->where('anio', date('Y'))
+            ->first();
+
 
          return view('home', compact('autores_con_perfil','libros_recomendados', 'lecturasLeyendo', 'lecturasPendientes','librerias','numero_de_lecturas_por_libreria','num_total_lecturas','reto','perfil'));
     }
