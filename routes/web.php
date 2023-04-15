@@ -12,6 +12,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Controllers\GeneroController;
 use App\Http\Controllers\HomeController;
 use App\Http\Controllers\LectorController;
+use App\Http\Controllers\LecturaController;
 use App\Http\Controllers\LibreriaController;
 use App\Http\Controllers\LibroController;
 use App\Http\Controllers\RetoController;
@@ -64,6 +65,9 @@ Route::post('/administradores/login', [AdministradorController::class, 'login'])
 Route::post('/administradores/logout', [AdministradorController::class, 'logout'])->name('administradores.logout');
 Route::middleware('auth:administradores')->group(function () {
     Route::get('/administradores/panel-control', [AdministradorController::class, 'panelControl'])->name('administradores.panelControl');
+    Route::post('/administradores/añadir', [AdministradorController::class, 'agregarLibro'])->name('administradores.agregarLibro');
+    Route::put('/administradores/actualizar/{id}', [AdministradorController::class, 'actualizarLibro'])->name('administradores.actualizarLibro');
+    Route::delete('/administradores/borrar/{id}', [AdministradorController::class, 'eliminarLibro'])->name('administradores.eliminarLibro');
     // Route::get('/panel-control', [AdministradorController::class, 'panelControl'])
 
 });
@@ -107,6 +111,10 @@ Route::middleware('auth:lector')->group(function () {
     // Route::get('/librerias/{libreria}', [LibreriaController::class, 'abrirLibreria'])->name('librerias.libros');
     Route::post('/librerias/nueva', [LibreriaController::class, 'crearLibreria'])->name('librerias.crearLibreria');
     Route::delete('/librerias/borrar/{libreria}', [LibreriaController::class, 'borrarLibreria'])->name('librerias.borrarLibreria');
+    Route::post('/librerias/agregar', [LibreriaController::class, 'agregarLibroALibreria'])->name('libreria.agregarLibro');
+
+    Route::put('/lecturas/{id}', [LecturaController::class, 'actualizar'])->name('lecturas.actualizar');
+
 
     Route::get('/reto', [RetoController::class, 'mostrar'])->name('reto.mostrar');
     Route::post('/reto', [RetoController::class, 'marcarObjetivo'])->name('reto.marcarObjetivo');

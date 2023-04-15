@@ -8,10 +8,38 @@
                 <div class="col-md-3 d-flex flex-column justify-content-center align-items-center">
                     <img src="{{ $libro->portada }}" class="portada_libro_ficha" alt="{{ $libro->titulo }}">
                     <wbr>
-                    <div>
-                        {{--TODO: Despliega las librerias --}}
-                        <button class="btn btn-primary" >Añadir a libreria</button> 
-                    </div>
+                        <div>
+                            {{--TODO: Despliega las librerias --}}
+                            <button class="btn btn-primary" onclick="mostrarSelect()">Añadir a libreria</button>
+                            <br>
+                            <br>
+                            <div id="librerias-select" style="display: none;">
+                                <form id="libreria-form" method="POST" action="{{ route('libreria.agregarLibro') }}">
+                                    @csrf
+                                    <input type="hidden" name="libro_id" value="{{ $libro->id }}">
+                                    <select id="select-librerias" name="libreria_id">
+                                        @foreach ($librerias as $libreria)
+                                            <option value="{{ $libreria->id }}">{{ $libreria->nombre }}</option>
+                                        @endforeach
+                                    </select>
+                                    <button type="submit" class="btn btn-primary mx-3">Agregar libro</button>
+                                </form>
+                            </div> 
+                        
+                            {{-- !SACAR A SCRIPT --}}
+                            <script>
+                                function mostrarSelect() {
+                                    var selectDiv = document.getElementById("librerias-select");
+                                    selectDiv.style.display = "block";
+                                }
+                        
+                                document.getElementById("select-librerias").addEventListener("change", function() {
+                                    document.getElementById("libreria-form").submit();
+                                    document.getElementById("librerias-select").style.display = "none";
+                                });
+                            </script>
+                        </div>
+                        
                     
                 </div>
                 <div class="col-md-9">
@@ -108,18 +136,79 @@
                                 @endif
                                 
                             </div>
+
+                           
+
+                            
+
                         </div>
                     </div>
                 </div>
             </div>
 
-            <wbr>
+            <br>
 
                 {{--Todo: Ficha de lectura del usuario Lector --}}
                 {{-- Fecha de inicio, páginas leidas, fecha de fin (), estado de la lectura (cambio de estado cuando las páginas leidas ), 
                     ¿notas hasta 1500 caracteres? , libreria en la que está--}}
 
 
+                    @if ($perfil->librerias->flatMap->lecturas->contains('libro_id', $libro->id))
+                    <!-- Mostrar el formulario -->
+        
+                        <hr>
+                        <div class="container">
+                            <div class="row">
+                            <div class="col-12 mb-4">
+                                <h3>Ficha de Lectura</h3>
+                            </div>
+                            <div class="col-md-6">
+                                <form method="POST" action="{{ route('lecturas.actualizar', $lectura->id) }}">
+                                @csrf
+                                @method('PUT')
+                                <div class="form-group">
+                                    <label for="fecha_inicio">Fecha de inicio</label>
+                                    <input type="date" class="form-control" id="fecha_inicio" name="fecha_inicio" value="{{ $lectura->fecha_inicio }}">
+                                </div>
+                                @if ($errors->has('fecha_inicio'))
+                                    <div class="alert alert-danger">{{ $errors->first('fecha_inicio') }}</div>
+                                @endif
+                                <div class="form-group">
+                                    <label for="fecha_fin">Fecha de finalización</label>
+                                    <input type="date" class="form-control" id="fecha_fin" name="fecha_fin" value="{{ $lectura->fecha_fin }}">
+                                </div>
+                                @if ($errors->has('fecha_fin'))
+                                    <div class="alert alert-danger">{{ $errors->first('fecha_fin') }}</div>
+                                @endif
+
+                                </div>
+                                <div class="col-md-6">
+                                <div class="form-group">
+                                    <label for="paginas_leidas">Páginas leídas</label>
+                                    <input type="number" class="form-control" id="paginas_leidas" name="paginas_leidas" min="1" max="{{$libro->numero_paginas }}" value="{{ $lectura->paginas_leidas }}">
+                                </div>
+                                @if ($errors->has('paginas_leidas'))
+                                    <div class="alert alert-danger">{{ $errors->first('paginas_leidas') }}</div>
+                                @endif
+
+                                <div class="form-group">
+                                    <label for="estado">Estado</label>
+                                    <select class="form-control" id="estado" name="estado">
+                                    <option value="Pendiente" {{ $lectura->estado == "Pendiente" ? "selected" : "" }}>Pendiente</option>
+                                    <option value="Leido" {{ $lectura->estado == "Leido" ? "selected" : "" }}>Leido</option>
+                                    <option value="Leyendo" {{ $lectura->estado == "Leyendo" ? "selected" : "" }}>Leyendo</option>
+                                    {{-- <option value="Abandonado" {{ $lectura->estado == "Abandonado" ? "selected" : "" }}>Abandonado</option> --}}
+                                    {{-- !Borrar lectura --}}
+                                    </select>
+                                </div>
+                                <br>
+                                <button type="submit" class="btn btn-primary">Guardar cambios</button>
+                                </form>
+                            </div>
+                            </div>
+                        </div>
+                    @endif
+                
 
 
                 <hr>

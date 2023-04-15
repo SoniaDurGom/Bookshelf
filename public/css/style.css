@@ -412,10 +412,36 @@ div.col {
 
 
 
+.nav-tabs .nav-link {
+  background-color: #00adb5;
+  color: #fff;
+  margin-right: 5px;
+}
+
+.nav-tabs .nav-link:hover {
+  color: #fff !important;
+}
+
+.nav-tabs .nav-link.active {
+  background-color: #007c82 !important;
+  color: #fff!important;
+}
 
 
 
 
 
 
-/* 
+.btn-admin-añadir{
+  font-size: 12px !important;
+}
+
+.btn-admin-eliminar{
+  margin-top: 5px !important ;
+  font-size: 12px !important ;
+}
+
+#btnAñadirLibroAdmin{
+  display: flex;
+  justify-content: center;
+}

@@ -4,9 +4,12 @@ namespace App\Http\Controllers;
 
 use App\Models\Autor;
 use App\Models\Genero;
+use App\Models\Lectura;
+use App\Models\Libreria;
 use App\Models\Libro;
 use App\Models\Perfil;
 use Carbon\Carbon;
+use Database\Seeders\LibreriaSeeder;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -16,8 +19,12 @@ class LibroController extends Controller
     {
         $libros = Libro::all();
         $perfil = Auth::guard('lector')->user();
+        // $librerias = $perfil->librerias;
+        $librerias = Libreria::where('lector_id', $perfil->id)->get();
+        
+        
 
-        return view('libros.index', compact('libros', 'perfil'));
+        return view('libros.index', compact('libros', 'perfil',' librerias '));
     }
 
 
@@ -75,8 +82,12 @@ class LibroController extends Controller
         // dd($autorRegistrado);   
 
         //Sacar las valoraciones del libro
+        $librerias = Libreria::where('lector_id', $perfil->id)->get();
+        $lectura = Lectura::where('libro_id', $libro->id)
+                      ->where('lector_id', $perfil->id)
+                      ->first();
 
-        return view('libros.fichaLibro', compact('libro', 'perfil', 'media','autorRegistrado'));
+        return view('libros.fichaLibro', compact('libro', 'perfil', 'media','autorRegistrado','librerias','lectura'));
     }
 
 
@@ -128,6 +139,9 @@ class LibroController extends Controller
         // Retornar la vista con las recomendaciones
         return view('libros.recomendaciones', compact('libros_recomendados', 'perfil'));
     }
+    
+    
+ 
     
     
    

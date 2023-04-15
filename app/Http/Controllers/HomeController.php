@@ -33,7 +33,10 @@ class HomeController extends Controller
     {
         $perfil = Auth::guard('lector')->user();
         // $librerias-> sacar 3
-        $leyendo = Libreria::where('nombre', 'Leyendo')->first();
+        $leyendo = Libreria::where('nombre', 'Leyendo')
+        ->where('lector_id', $perfil->id)
+        ->first();
+        
         $lecturasLeyendo = $leyendo->lecturas()->inRandomOrder()->take(3)->get();
        
         $pendientes = Libreria::where('nombre', 'Quiero Leer')->first();

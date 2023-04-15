@@ -98,6 +98,7 @@ class LectorController extends Controller
         // dd($lector);
         $lector->save();
 
+
         $nombres_librerias = ["Leído", "Leyendo", "Quiero leer"];
         foreach ($nombres_librerias as $nombre) {
             $libreria = new Libreria();
@@ -106,6 +107,12 @@ class LectorController extends Controller
             $libreria->save();
         }
 
+        $anio = date('Y');
+        $reto = new Reto();
+        $reto->lector_id = $lector->id;
+        $reto->anio =  $anio;
+        // dd($reto);
+        $reto->save();
 
         // Autenticar al lector y redireccionarlo a su panel de control.
 
@@ -148,10 +155,11 @@ class LectorController extends Controller
         $libreriasUsuario = $perfil->librerias;
     
         // Mostrar hasta 10 libros aleatorios de la librería "Leyendo" del lector.
-        $leyendo = Libreria::where('nombre', 'Leyendo')->first();
+        $leyendo = Libreria::where('nombre', 'Leyendo')
+        ->where('lector_id', $perfil->id)
+        ->first();
+        
         $lecturasLeyendo = $leyendo->lecturas()->inRandomOrder()->take(10)->get();
-
-
       
        
     

@@ -88,6 +88,8 @@ class RetoController extends Controller
    
         $reto->save();
 
+        $this->actualizarProgresoReto();
+
         return redirect()->route('reto.mostrar')->with('success', 'Reto actualizado'); //!Mostrar mensaje al uasuario
     }
 

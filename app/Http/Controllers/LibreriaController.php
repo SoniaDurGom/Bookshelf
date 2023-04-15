@@ -4,17 +4,40 @@ namespace App\Http\Controllers;
 
 use App\Models\Lectura;
 use App\Models\Libreria;
+use App\Models\Libro;
+use App\Services\LecturaService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
 class LibreriaController extends Controller
 {
+
+    private $lecturaService;
+
+    public function __construct(LecturaService $lecturaService)
+    {
+        $this->lecturaService = $lecturaService;
+    }
+
+    public function agregarLibroALibreria(Request $req)
+    {
+        $libroId = $req->libro_id;
+        $libreriaId = $req->libreria_id;
+
+        if ($this->lecturaService->crearLectura($libroId, $libreriaId)) {
+            return redirect()->back()->with('success', 'Libro agregado a la librería con éxito.');
+        } else {
+            return redirect()->back()->with('error', 'Ya existe una lectura para este libro y usuario.');
+        }
+    }
     
     public function mostrarLibrerias()
     {
-        $librerias = Libreria::all();
+       
         $perfil = Auth::guard('lector')->user();
         $lector_id = auth()->guard('lector')->id();
+        $librerias = Libreria::where('lector_id', $lector_id)->get();
+        
         
         $lecturas = Lectura::where('lector_id', $lector_id)->get();
         return view('librerias.libreriasLector', compact('librerias', 'perfil', 'lecturas'));
@@ -78,12 +101,35 @@ class LibreriaController extends Controller
         }
     }
 
+    
 
-    public function agregarLibroALibreria($libreriaId, $libroId)
-    {
-        $libreria = Libreria::find($libreriaId);
-        $libreria->libros()->attach($libroId);
-    }
+
+    // public function agregarLibroALibreria(Request $req)
+    // {
+    //     $lectorId = Auth::guard('lector')->user()->id;
+    //     $libroId=$req->libro_id;
+    //     $libreriaId=$req->libreria_id;
+        
+    //     //Si ya hay una ficha de lectura para un usuario de un libro, no se crea otra-
+    //     $existeLectura = Lectura::where('libro_id', $libroId)
+    //                                 ->where('lector_id', $lectorId)
+    //                                 ->exists();
+    //     if ($existeLectura) {
+    //         return redirect()->back()->with('error', 'Ya existe una librería con este nombre');
+    //     }
+
+    //     $lectura = new Lectura;
+    //     $lectura->libro_id = $lectorId;
+    //     $lectura->lector_id = $lectorId;
+    //     $lectura->libreria_id = $libreriaId;
+    //     $lectura->save();
+        
+    //     // Agregar el libro a la librería y guardar los cambios en la base de datos.
+    //     // $libreria->lecturas->attach($libro);
+        
+    //     return redirect()->back()->with('success', 'Libro agregado a la librería con éxito.');
+    // }
+    
 
     public function eliminarLibroDeLibreria($libreriaId, $libroId)
     {

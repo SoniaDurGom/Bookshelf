@@ -113,25 +113,33 @@
                             @foreach($libros_recomendados as $index => $libro)
                                 <div class="carousel-item {{ $index == 0 ? 'active' : '' }}">
                                     <div class="d-flex align-items-start">
-                                        <img id=img-recomendacion-index class="card-img-top mr-3" src="{{ $libro->portada }}" alt="{{ $libro->titulo }}">
+                                        {{-- <a href="{{ route('libros.fichaLibro', $libro->id) }}"> --}}
+                                            {{-- <img id=img-recomendacion-index class="card-img-top mr-3"  src="{{ $libro->portada }}" alt="{{ $libro->titulo }}"> --}}
+                                        {{-- </a>  --}}
+                                    
+                                        <a id="img-recomendacion-index" href="{{ route('libros.fichaLibro', $libro->id) }}"> <img class="card-img-top" src="{{ $libro->portada }}" alt="{{ $libro->titulo }}"></a> 
+                                    
+                                        
+                                        {{-- <img id=img-recomendacion-index class="card-img-top mr-3"  src="{{ $libro->portada }}" alt="{{ $libro->titulo }}"> --}}
                                         <div class="m-2">
                                             <h5 class="card-title">{{ $libro->titulo }}</h5>
                                             @foreach($libro->autorSinCuenta as $autor)
                                                 @foreach($autores_con_perfil as $autor_con_perfil)
                                                     @if($autor->nombreCompleto == $autor_con_perfil->perfil->name)
-                                                        <p class="link_autor">
-                                                            de <a class="link" href="">
+                                                        <span class="link_autor">
+                                                            <a class="link" href="">
                                                                 {{$autor_con_perfil->perfil->name}}
                                                             </a> 
-                                                        </p>
+                                                        </span>
+                                                        <br>
                                                         @break
                                                     @else
-                                                        <p class="link_autor">de {{ $autor->apellidos }}, {{ $autor->nombre }}</p>
+                                                        <p class="link_autor"> {{ $autor->apellidos }}, {{ $autor->nombre }}</p>
                                                     @endif
                                                 @endforeach
                                             @endforeach
                                             
-                                            <a href="{{ route('libros.fichaLibro', $libro->id) }}" class="btn btn-primary">Añadir</a> <br>
+                                            {{-- <a href="{{ route('libros.fichaLibro', $libro->id) }}" class="btn btn-primary">Añadir</a> <br> --}}
     
                                         </div>
                                     </div>
