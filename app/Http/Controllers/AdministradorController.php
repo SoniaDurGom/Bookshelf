@@ -113,6 +113,7 @@ class AdministradorController extends Controller
      // Funcion que saca modifica los datos de un Libro
      public function agregarLibro(Request $request)
      {
+  
          $request->validate([
              'isbn' => 'required|string|unique:libros,isbn',
              'titulo' => 'required|string',
@@ -163,131 +164,125 @@ class AdministradorController extends Controller
      
 
 
-    // // Funcion que saca modifica los datos de un Libro
-    // public function actualizarLibros(Request $request, $id)
-    // {
-    //     // Obtener el libro a actualizar
-    //     $libro = Libro::find($id);
-
-    //     // Obtener los datos del formulario
-    //     $isbn = $request->input('isbn');
-    //     $titulo = $request->input('titulo');
-    //     $autores = $request->input('autores');
-    //     $portada = $request->input('portada');
-    //     $fechaPublicacion = $request->input('fechaPublicacion');
-    //     $editorialId = $request->input('editorial');
-
-    //     // Validar que los campos requeridos estén presentes y tengan un formato válido
-    //     $validator = Validator::make($request->all(), [
-    //         'isbn' => 'required',
-    //         'titulo' => 'required',
-    //         'portada' => 'required',
-    //         'fechaPublicacion' => 'required|date',
-    //         'editorial' => 'required'
-    //     ]);
-
-    //     if ($validator->fails()) {
-    //         return redirect()->back()->withErrors($validator)->withInput();
-    //     }
-
-    //     // Validar que los autores especificados en el campo "autores" estén registrados en la base de datos
-    //     $autoresArray = preg_split('/[\s,]+/', $autores); // Separar la cadena de texto en un array de nombres
-    //     $autoresIds = [];
-
-    //     foreach ($autoresArray as $nombre) {
-    //         $autor = Autor::where('nombre', $nombre)->first();
-
-    //         if (!$autor) {
-    //             // Si el autor no está registrado en la base de datos, mostrar un error
-    //             $validator->errors()->add('autores', 'El autor ' . $nombre . ' no está registrado en la base de datos.');
-    //             return redirect()->back()->withErrors($validator)->withInput();
-    //         }
-
-    //         $autoresIds[] = $autor->id;
-    //     }
-
-    //     // Actualizar los datos del libro en la base de datos
-    //     $libro->isbn = $isbn;
-    //     $libro->titulo = $titulo;
-    //     $libro->portada = $portada;
-    //     $libro->fecha_publicacion = $fechaPublicacion;
-    //     $libro->editorial_id = $editorialId;
-    //     $libro->autores()->sync($autoresIds);
-    //     $libro->save();
-
-    //     return redirect()->route('administradores.panelControl')->with('success', 'El libro se ha actualizado correctamente');
-    // }
-
-    public function actualizarLibro(Request $request, $id)
+    public function actualizar(Request $request, $accion)
     {
-       
-        $request->validate([
-            'isbn' => 'required|unique:libros,isbn,'.$id.'|max:255',
-            'titulo' => 'required|max:255',
-            'portada' => 'required|url|max:255',
-            'fechaPublicacion' => 'required|date',
-            'editorial' => 'required',
-            'autores' => 'required',
-            'numeroPaginas'=>'required|integer|min:1',
-        ], [
-            'isbn.required' => 'El campo ISBN es obligatorio',
-            'isbn.unique' => 'El ISBN ya existe en la base de datos',
-            'isbn.max' => 'El campo ISBN debe tener como máximo 255 caracteres',
-            'titulo.required' => 'El campo Título es obligatorio',
-            'titulo.max' => 'El campo Título debe tener como máximo 255 caracteres',
-            'portada.required' => 'El campo Portada es obligatorio',
-            'portada.url' => 'El campo Portada debe ser una URL válida',
-            'portada.max' => 'El campo Portada debe tener como máximo 255 caracteres',
-            'fechaPublicacion.required' => 'El campo Fecha de publicación es obligatorio',
-            'fechaPublicacion.date' => 'El campo Fecha de publicación debe ser una fecha válida',
-            'editorial.required' => 'El campo Editorial es obligatorio',
-            'autores.required' => 'El campo Autores es obligatorio'
-        ]);
-        
-
-        // Buscar la editorial por nombre y obtener su id
-        // $editorial = Editorial::where('nombre', $request->editorial)->first();
-        $editorial_id = $request->editorial;
-    
-        // Analizar los autores ingresados por el usuario
-        $autores = explode(',', $request->autores);
-        $autores_validos = [];
-        
-        foreach ($autores as $autor) {
-            $nombres = explode(' ', trim($autor));
-            $nombre_autor = end($nombres);
-            array_pop($nombres);
-            $apellido_autor = implode(' ', $nombres);
-            
-            // Buscar el autor por nombre y apellido y validar su existencia
-            $autor = Autor_Sin_Cuenta::where('nombre', $nombre_autor)->where('apellidos', $apellido_autor)->first();
-            if ($autor) {
-                $autores_validos[] = $autor->id;
+        // dd($request);
+        if ($accion == 'bloque') {
+            $libros_seleccionados = $request->input('libros_seleccionados');
+            $libros_seleccionados_array = explode(',', $libros_seleccionados[0]);
+            $datos_libros = json_decode($request->input('datos_libros'), true);
+            foreach ($libros_seleccionados_array as $id_libro) {
+                if(!$id_libro){
+                    return redirect()->back()->with('error', 'Selecciona algún libro');
+                }else{
+                    // dd($id_libro);
+                    $this->actualizarBloque( $libros_seleccionados_array,  $datos_libros);
+                }
             }
-
-            if (empty($autores_validos)) {
-                return redirect()->back()->withErrors(['autores' => 'No se encontraron autores válidos en la base de datos.'])->withInput();
-            }
+            return redirect()->back()->with('success', 'Los libros seleccionados han sido actualizados con exito.');
+        } else if ($accion == 'libro') {
+            $this->actualizarLibro($request, $request->id);
+            return redirect()->back()->with('success', 'El libro ha sido actualizado.');
         }
-        
-       
-        // Actualizar el libro en la base de datos con los nuevos valores
-        $libro = Libro::find($id);
-        $libro->isbn = $request->isbn;
-        $libro->titulo = $request->titulo;
-        $libro->portada = $request->portada;
-        $libro->fecha_publicacion = $request->fechaPublicacion;
-        $libro->editorial_id = $editorial_id;
-        $libro->numero_paginas = $request->input('numeroPaginas');
-        $libro->autorSinCuenta()->sync($autores_validos);
-
-        $libro->save();
-
-    
-        return redirect()->back()->with('mensaje', 'Libro actualizado correctamente');
     }
     
 
+
+    public function actualizarLibro(Request $request, $id)
+        {
+            // Obtener el libro a actualizar
+            $libro = Libro::findOrFail($id);
+
+            // Obtener los datos del formulario
+            $isbn = $request->input('isbn');
+            $titulo =$request->input('titulo');
+            $autores = $request->input('autores');
+            $portada = $request->input('portada');
+            $fechaPublicacion = $request->input('fechaPublicacion');
+            $editorial = $request->input('editorial');
+            $numeroPaginas = $request->input('numeroPaginas');
+
+            // Validar que los campos requeridos estén presentes y tengan un formato válido
+            // dd($datos_libro);
+            $request->validate([
+                'isbn' => 'required|unique:libros,isbn,'.$id.'|max:255',
+                'titulo' => 'required|max:255',
+                'portada' => 'required|url|max:255',
+                'fechaPublicacion' => 'required|date',
+                'editorial' => 'required',
+                'autores' => 'required',
+                'numeroPaginas'=>'required|integer|min:1',
+            ], [
+                'isbn.required' => 'El campo ISBN es obligatorio',
+                'isbn.unique' => 'El ISBN ya existe en la base de datos',
+                'isbn.max' => 'El campo ISBN debe tener como máximo 255 caracteres',
+                'titulo.required' => 'El campo Título es obligatorio',
+                'titulo.max' => 'El campo Título debe tener como máximo 255 caracteres',
+                'portada.required' => 'El campo Portada es obligatorio',
+                'portada.url' => 'El campo Portada debe ser una URL válida',
+                'portada.max' => 'El campo Portada debe tener como máximo 255 caracteres',
+                'fechaPublicacion.required' => 'El campo Fecha de publicación es obligatorio',
+                'fechaPublicacion.date' => 'El campo Fecha de publicación debe ser una fecha válida',
+                'editorial.required' => 'El campo Editorial es obligatorio',
+                'autores.required' => 'El campo Autores es obligatorio',
+                'numeroPaginas.required' => 'El campo páginas es obligatorio'
+            ]);
+
+                // Analizar los autores ingresados por el usuario
+            $autores = explode(',', $autores);
+            $autores_validos = [];
+           
+            foreach ($autores as $autor) {
+                $nombres = explode(' ', trim($autor));
+                $nombre_autor = end($nombres);
+                array_pop($nombres);
+                $apellido_autor = implode(' ', $nombres);
+
+               
+
+                // Buscar el autor por nombre y apellido y validar su existencia
+                $autor = Autor_Sin_Cuenta::where('nombre', $nombre_autor)->where('apellidos', $apellido_autor)->first();
+                if ($autor) {
+                    $autores_validos[] = $autor->id;
+                }
+
+                if (empty($autores_validos)) {
+                    return redirect()->back()->withErrors(['autores' => 'No se encontraron autores válidos en la base de datos.'])->withInput();
+                }
+            }
+          
+            // Actualizar los datos del libro en la base de datos
+            $libro->isbn = $isbn;
+            $libro->titulo = $titulo;
+            $libro->portada = $portada;
+            $libro->fecha_publicacion = $fechaPublicacion;
+            $libro->editorial_id = $editorial;
+            $libro->autorSinCuenta()->sync($autores_validos);
+            $libro->numero_paginas = $numeroPaginas;
+           
+            $libro->save();
+
+            return redirect()->route('administradores.panelControl')->with('success', 'El libro se ha actualizado correctamente');
+        }
+
+
+
+    
+        public function actualizarBloque($libros_seleccionados_array, $datos_libros)
+        {
+            foreach ($libros_seleccionados_array as $key => $id_libro) {
+                if(!$id_libro){
+                    return redirect()->back()->with('error', 'Selecciona algún libro');
+                }else{
+                    $nueva_request = new Request($datos_libros[$key]);
+        
+                    $this->actualizarLibro($nueva_request, $id_libro);
+                    return redirect()->back()->with('success', 'Los libros seleccionados han sido actualizados.');
+                }
+               
+            }
+            
+        }
     
 
 
@@ -300,6 +295,28 @@ class AdministradorController extends Controller
         return redirect()->back()->with('success', 'Libro eliminado correctamente');
     }
 
+
+    
+    public function eliminar(Request $request,$accion)
+    {
+        if ($accion == 'bloque') {
+            $libros_seleccionados = $request->input('libros_seleccionados');
+            $libros_seleccionados_array = explode(',', $libros_seleccionados[0]);
+            foreach ($libros_seleccionados_array as $id_libro) {
+                if(!$id_libro){
+                    return redirect()->back()->with('error', 'Selecciona algún libro');
+                }else{
+                    // dd($id_libro);
+                    $this->eliminarLibro($id_libro);
+                }
+            }
+            return redirect()->back()->with('success', 'Los libros seleccionados han sido borrados con exito.');
+        } else if ($accion == 'libro') {
+            // dd($request->idLibro);
+            $this->eliminarLibro($request->idLibro);
+            return redirect()->back()->with('success', 'El libro ha sido borrado con exito.');
+        }
+    }
 
 
 

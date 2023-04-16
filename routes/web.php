@@ -66,9 +66,13 @@ Route::post('/administradores/logout', [AdministradorController::class, 'logout'
 Route::middleware('auth:administradores')->group(function () {
     Route::get('/administradores/panel-control', [AdministradorController::class, 'panelControl'])->name('administradores.panelControl');
     Route::post('/administradores/añadir', [AdministradorController::class, 'agregarLibro'])->name('administradores.agregarLibro');
-    Route::put('/administradores/actualizar/{id}', [AdministradorController::class, 'actualizarLibro'])->name('administradores.actualizarLibro');
-    Route::delete('/administradores/borrar/{id}', [AdministradorController::class, 'eliminarLibro'])->name('administradores.eliminarLibro');
-    // Route::get('/panel-control', [AdministradorController::class, 'panelControl'])
+
+    Route::post('/administradores/actualizar/{accion}/{id?}', [AdministradorController::class, 'actualizar'])->name('administradores.actualizar');
+
+    Route::delete('/administradores/borrar/{accion}/{id?}', [AdministradorController::class, 'eliminar'])->name('administradores.eliminar');
+    // Route::delete('/administradores/borrar/{id}', [AdministradorController::class, 'eliminarLibro'])->name('administradores.eliminarLibro');
+    
+
 
 });
 
