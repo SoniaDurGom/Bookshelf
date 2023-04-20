@@ -17,6 +17,7 @@ use App\Http\Controllers\LibreriaController;
 use App\Http\Controllers\LibroController;
 use App\Http\Controllers\RetoController;
 use App\Http\Controllers\ValoracionesController;
+use App\Models\Administrador;
 
 /*
 |--------------------------------------------------------------------------
@@ -65,12 +66,19 @@ Route::post('/administradores/login', [AdministradorController::class, 'login'])
 Route::post('/administradores/logout', [AdministradorController::class, 'logout'])->name('administradores.logout');
 Route::middleware('auth:administradores')->group(function () {
     Route::get('/administradores/panel-control', [AdministradorController::class, 'panelControl'])->name('administradores.panelControl');
+
+    Route::get('/administradores/panel-control/libros', [AdministradorController::class, 'mostrarLibros'])->name('administrador.libros');
+
+    Route::get('/administradores/panel-control/libros', [AdministradorController::class, 'mostrarAutorSinCuenta'])->name('administrador.autores');
+
+
     Route::post('/administradores/añadir', [AdministradorController::class, 'agregarLibro'])->name('administradores.agregarLibro');
-
     Route::post('/administradores/actualizar/{accion}/{id?}', [AdministradorController::class, 'actualizar'])->name('administradores.actualizar');
-
     Route::delete('/administradores/borrar/{accion}/{id?}', [AdministradorController::class, 'eliminar'])->name('administradores.eliminar');
     // Route::delete('/administradores/borrar/{id}', [AdministradorController::class, 'eliminarLibro'])->name('administradores.eliminarLibro');
+    Route::post('/administradores/añadir/autores-sin-cuenta', [AdministradorController::class, 'agregarAutorSinCuenta'])->name('administradores.agregarAutorSinCuenta');
+    Route::post('/administradores/actualizar/autores-sin-cuenta/{accion}/{id?}', [AdministradorController::class, 'actualizarAutorSinCuenta'])->name('administradores.actualizarAutorSinCuenta');
+    Route::delete('/administradores/borrar/autores-sin-cuenta/{accion}/{id?}', [AdministradorController::class, 'eliminarAutorSinCuenta'])->name('administradores.eliminarAutorSinCuenta');
     
 
 
