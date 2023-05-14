@@ -18,7 +18,7 @@
             <div class="row">
                 <div class="col-xl-4 col-md-6 d-flex flex-column">
                     {{-- Izquierda --}}
-                    <h5>Leyendo</h5>
+                    <h5 class="home-txt">Leyendo</h5>
                         @if (count($lecturasLeyendo) == 0)
                             <div>
                                 <a class="link" href="{{route('libros.index')}}"> Explorar</a> 
@@ -55,7 +55,7 @@
 
                         <div class="col-9 col-sm-8 ">
                             <hr>
-                            <h5>Pendientes</h5>
+                            <h5 class="home-txt">Pendientes</h5>
                             @if (count($lecturasPendientes) == 0)
                                 <div>
                                     <a class="link" href="{{route('libros.index')}}"> Explorar</a> 
@@ -75,7 +75,7 @@
                     
                     <div class="col-9 col-sm-8 mb-1">
                         <hr>
-                        <h5>Librerias</h5>
+                        <h5 class="home-txt" >Librerias</h5>
                         <div>
                             <a class="link-libreria" href="{{ route('librerias.mostrar', 'todos') }}">
                                 ({{$num_total_lecturas}}) Todos
@@ -107,7 +107,7 @@
                 
                 <div class="col-xl-4 col-md-6">
                     {{-- Derecha --}}
-                    <h5>Recomendaciones</h5>
+                    <h5 class="home-txt">Recomendaciones</h5>
                     <div id="carouselLibrosRecomendados" class="carousel slide" data-ride="carousel">
                         <div class="carousel-inner">
                             @foreach($libros_recomendados as $index => $libro)
@@ -171,7 +171,7 @@
 
                     <div class="col-9 col-sm-8">
                         <hr>
-                        <h5>{{$reto->anio}} Reto de lectura</h5>
+                        <h5 class="home-txt">{{$reto->anio}} Reto de lectura</h5>
                          {{-- Imagen del reto anual, que se guarda en public/img --}}
                         {{-- <img id="img-reto" src="{{ asset('img/reto2023.jpeg') }}" alt="imagen reto literario año 2023"> --}}
 

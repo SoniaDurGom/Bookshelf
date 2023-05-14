@@ -68,17 +68,26 @@ Route::middleware('auth:administradores')->group(function () {
     Route::get('/administradores/panel-control', [AdministradorController::class, 'panelControl'])->name('administradores.panelControl');
 
     Route::get('/administradores/panel-control/libros', [AdministradorController::class, 'mostrarLibros'])->name('administrador.libros');
-
-    Route::get('/administradores/panel-control/libros', [AdministradorController::class, 'mostrarAutorSinCuenta'])->name('administrador.autores');
-
+    Route::get('/administradores/panel-control/autores', [AdministradorController::class, 'mostrarAutorSinCuenta'])->name('administrador.autores');
+    Route::get('/administradores/panel-control/editoriales', [AdministradorController::class, 'mostrarEditorial'])->name('administrador.editoriales');
+    // Route::get('/administradores/panel-control/generos', [AdministradorController::class, 'mostrarGeneros'])->name('administrador.generos');
 
     Route::post('/administradores/añadir', [AdministradorController::class, 'agregarLibro'])->name('administradores.agregarLibro');
     Route::post('/administradores/actualizar/{accion}/{id?}', [AdministradorController::class, 'actualizar'])->name('administradores.actualizar');
     Route::delete('/administradores/borrar/{accion}/{id?}', [AdministradorController::class, 'eliminar'])->name('administradores.eliminar');
-    // Route::delete('/administradores/borrar/{id}', [AdministradorController::class, 'eliminarLibro'])->name('administradores.eliminarLibro');
+    
     Route::post('/administradores/añadir/autores-sin-cuenta', [AdministradorController::class, 'agregarAutorSinCuenta'])->name('administradores.agregarAutorSinCuenta');
     Route::post('/administradores/actualizar/autores-sin-cuenta/{accion}/{id?}', [AdministradorController::class, 'actualizarAutorSinCuenta'])->name('administradores.actualizarAutorSinCuenta');
     Route::delete('/administradores/borrar/autores-sin-cuenta/{accion}/{id?}', [AdministradorController::class, 'eliminarAutorSinCuenta'])->name('administradores.eliminarAutorSinCuenta');
+    
+      
+    Route::post('/administradores/añadir/editoriales', [AdministradorController::class, 'agregarEditorial'])->name('administradores.agregarEditorial');
+    Route::post('/administradores/actualizar/editoriales/{accion}/{id?}', [AdministradorController::class, 'actualizarEditorial'])->name('administradores.actualizarEditorial');
+    Route::delete('/administradores/borrar/editoriales/{accion}/{id?}', [AdministradorController::class, 'eliminarEditorial'])->name('administradores.eliminarEditorial');
+
+    Route::post('/administradores/añadir/generos', [AdministradorController::class, 'agregarGenero'])->name('administradores.agregarGenero');
+    Route::post('/administradores/actualizar/generos/{accion}/{id?}', [AdministradorController::class, 'actualizarGenero'])->name('administradores.actualizarGenero');
+    Route::delete('/administradores/borrar/generos/{accion}/{id?}', [AdministradorController::class, 'eliminarGenero'])->name('administradores.eliminarGenero');
     
 
 
@@ -131,7 +140,7 @@ Route::middleware('auth:lector')->group(function () {
     Route::get('/reto', [RetoController::class, 'mostrar'])->name('reto.mostrar');
     Route::post('/reto', [RetoController::class, 'marcarObjetivo'])->name('reto.marcarObjetivo');
 
-
+    Route::post('/buscar', [RetoController::class, 'buscar'])->name('buscar.libro');
     
 });
 

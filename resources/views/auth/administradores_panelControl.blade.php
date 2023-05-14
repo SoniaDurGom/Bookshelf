@@ -12,7 +12,7 @@
     @extends('layouts.layout2')
 
     @section('content')
-        <div class="container">
+        <div class="container container2">
             <div class="row justify-content-center">
                 <div class="col-sm-12 col-md-12">
 
@@ -21,6 +21,7 @@
                             <button class="nav-link @if(session('tab') == 'libros') active @endif" id="nav-libro-tab" data-bs-toggle="tab" data-bs-target="#nav-libro" type="button" role="tab" aria-controls="nav-libro" aria-selected="true">Libros</button>
                             <button class="nav-link @if(session('tab') == 'autores') active @endif" id="nav-autores-tab" data-bs-toggle="tab" data-bs-target="#nav-autor" type="button" role="tab" aria-controls="nav-autor" aria-selected="false">Autores</button>
                             <button class="nav-link @if(session('tab') == 'editoriales') active @endif" id="nav-editoriales-tab" data-bs-toggle="tab" data-bs-target="#nav-editoriales" type="button" role="tab" aria-controls="nav-editoriales" aria-selected="false">Editoriales</button>
+                            <button class="nav-link @if(session('tab') == 'generos') active @endif" id="nav-generos-tab" data-bs-toggle="tab" data-bs-target="#nav-generos" type="button" role="tab" aria-controls="nav-generos" aria-selected="false">Generos</button>
                             <button class="nav-link @if(session('tab') == 'solicitudAutor') active @endif" id="nav-solicituAutores-tab" data-bs-toggle="tab" data-bs-target="#nav-SolicitudAutor" type="button" role="tab" aria-controls="nav-soliciturdAutores" aria-selected="false" disabled>Solicitud autores</button>
                             <button class="nav-link @if(session('tab') == 'solicitudLibro') active @endif" id="nav-solicitudLibro-tab" data-bs-toggle="tab" data-bs-target="#nav-solicitudLibro" type="button" role="tab" aria-controls="nav-solicitudLibro" aria-selected="false" disabled>Solicitudes libros</button>
                         </div>
@@ -36,8 +37,13 @@
                             @include('administrador.autores')
                         </div>
                     
-                        <div class="tab-pane fade @if(session('tab') == 'editoriales') show active @endif" id="nav-editoriales" role="tabpanel" aria-labelledby="nav-editorialeses-tab">
-                            Aqui se van a mostrar las editoriales
+                        <div class="tab-pane fade @if(session('tab') == 'editoriales') show active @endif" id="nav-editoriales" role="tabpanel" aria-labelledby="nav-editoriales-tab">
+                            @include('administrador.editoriales')
+                        </div>
+
+                        <div class="tab-pane fade @if(session('tab') == 'generos') show active @endif" id="nav-generos" role="tabpanel" aria-labelledby="nav-generos-tab">
+                            @include('administrador.generos')
+                            {{-- Aqui se van a mostrar los generos  --}}
                         </div>
                     
                         <div class="tab-pane fade @if(session('tab') == 'solicitudLibro') show active @endif" id="nav-solicitudLibro" role="tabpanel" aria-labelledby="nav-solicitudLibro-tab">

@@ -262,26 +262,7 @@ class LectorController extends Controller
     }
 
 
-    // public function retoActual()
-    // {
-    //     $lector = Auth::guard('lector')->user();
-    //     $anio = date('Y');
-    //     $reto = $this->reto()->where('anio', $anio)->first();
-    
-    //     if (!$reto) { //Si no existe un reto para el año actual se crea uno con el año actual
 
-    //         $reto = $this->reto()->create([
-    //             'anio' => date('Y'),
-    //             'libros_objetivo' => 0,
-    //             'libros_leidos' => 0,
-    //             'lecturas_leidas' => 0,
-    //             'completado' => false,
-    //             'lector_id' => $lector->id,
-    //         ]);
-    //     }
-    
-    //     return $reto;
-    // }
     
 
 

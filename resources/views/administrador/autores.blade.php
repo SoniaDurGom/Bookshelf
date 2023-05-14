@@ -30,7 +30,7 @@
                                 <td>
                                     <input type="hidden" name="autor_data" value={{$autor->id}} form="form-autor-{{$autor->id}}">
                                     <button type="submit" class="btn btn-primary btn-admin-añadir" form="form-autor-{{$autor->id}}">Actualizar</button>
-                                    <button type="button" class="btn btn-danger btn-admin-eliminar" data-bs-toggle="modal" data-bs-target="#eliminarAutorSinCuentaModal{{$autor->id}}">Eliminar</button>
+                                    <button type="button" class="btn btn-danger btn-admin-eliminar no-margin" data-bs-toggle="modal" data-bs-target="#eliminarAutorSinCuentaModal{{$autor->id}}">Eliminar</button>
                                 </td>
                         </form>
                     </tr>

@@ -111,7 +111,7 @@
                                 <h5>Leyendo actualmente</h5>
                                 <hr>
                                 @foreach($lecturasLeyendo as $lectura)
-                                    <div class="col-md-6 col-lg-4">
+                                    <div class="col-xl-4 col-lg-5">
                                         <div class="mb-3">
                                             <div class="row no-gutters">
                                                 <div class="col-4">
@@ -156,19 +156,38 @@
                                     @csrf
                                     <div class="row row-cols-3 row-cols-md-6">
                                       @foreach($generos as $index => $genero)
-                                        @if($index % 3 === 0)
+                                        {{-- @if($index % 6 === 0)
                                           </div><div class="row row-cols-3 row-cols-md-6">
-                                        @endif
+                                        @endif --}}
                                         <div class="col">
                                             <input type="checkbox" name="favoritos[{{ $genero->id }}]" value="{{ $genero->id }}" @if($perfil->generosFavoritos->contains($genero->id)) checked @endif>
                                             <label>{{ $genero->nombre }}</label>
                                         </div>
                                       @endforeach
                                     </div>
+
+                                    @if(session('success'))
+                                        <div class="alert alert-success">
+                                            {{ session('success') }}
+                                        </div>
+                                    @endif
+
+                                    @if($errors->any())
+                                        <div class="alert alert-danger">
+                                            @foreach($errors->all() as $error)
+                                                <p>{{ $error }}</p>
+                                            @endforeach
+                                        </div>
+                                    @endif
+
+
+
                                     <button class="btn btn-primary" type="submit">Guardar</button>
                                   </form>
+
                                   
-                                  
+                               
+
                                        
                         
                                         

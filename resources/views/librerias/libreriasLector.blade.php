@@ -54,10 +54,10 @@
                             @foreach ($libreriaSeleccionada as $libreria)
                                 {{-- <h3>{{ $libreria->nombre }}</h3> --}}
                                 @foreach ($libreria->lecturas as $lectura)
-                                        <div class="col-6 col-sm-3 col-lg-2 mb-3">
+                                        <div class="col-6 col-sm-3 col-lg-3 col-xl-2 mb-3">
                                             <div>
                                                 {{-- !Cambiar a ficha lectura--}}
-                                                <a href="{{ route('libros.fichaLibro', $lectura->libro->id) }}"> <img class="card-img-top" src="{{ $lectura->libro->portada }}" alt="{{ $lectura->libro->titulo }}"></a> 
+                                                <a href="{{ route('libros.fichaLibro', $lectura->libro->id) }}"> <img class="book-card-ima-library" src="{{ $lectura->libro->portada }}" alt="{{ $lectura->libro->titulo }}"></a> 
                                             </div>
                                         </div>
                                 @endforeach
@@ -106,7 +106,7 @@
                             <form action="{{ route('librerias.crearLibreria') }}" method="POST">
                                 @csrf
                                 <label for="nuevaLibreria">Libreria:</label> <br>
-                                <input type="text" name="nuevaLibreria" id=""> <br><br>
+                                <input type="text" name="nuevaLibreria" id="" required> <br><br>
                                 <button class="btn btn-primary" type="submit">Nueva libreria</button>
                             </form>
                         </div> 
@@ -130,7 +130,7 @@
                         <div class="col-6 col-sm-3 col-lg-2 mb-3">
                             <div>
                                 {{-- !Cambiar a ficha lectura--}}
-                                <a href="{{ route('libros.fichaLibro', $lectura->libro->id) }}"> <img class="card-img-top" src="{{ $lectura->libro->portada }}" alt="{{ $lectura->libro->titulo }}"></a> 
+                                <a href="{{ route('libros.fichaLibro', $lectura->libro->id) }}"> <img class="book-card-ima-library" src="{{ $lectura->libro->portada }}" alt="{{ $lectura->libro->titulo }}"></a> 
                             </div>
                         </div>
                     @endforeach 

@@ -2,10 +2,13 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Libro;
 use Illuminate\Foundation\Auth\Access\AuthorizesRequests;
 use Illuminate\Foundation\Validation\ValidatesRequests;
+use Illuminate\Http\Request;
 use Illuminate\Routing\Controller as BaseController;
 use Illuminate\Support\Facades\Auth;
+
 
 class Controller extends BaseController
 {
@@ -37,4 +40,15 @@ class Controller extends BaseController
         }
         return view('etc.terminos-y-condiciones', compact('perfil'));
     }
+
+
+    public function buscar(Request $request)
+    {
+        
+        $perfil = Auth::guard('lector')->user();
+        $query = $request->input('query');
+        $librosBusqueda = Libro::where('titulo', 'LIKE', '%'.$query.'%')->get();
+        return view('libros.busqueda', compact('librosBusqueda', 'perfil'));
+    }
+
 }

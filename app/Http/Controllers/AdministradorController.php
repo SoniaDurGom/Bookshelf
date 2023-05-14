@@ -5,6 +5,7 @@ namespace App\Http\Controllers;
 use App\Models\Autor;
 use App\Models\Autor_Sin_Cuenta;
 use App\Models\Editorial;
+use App\Models\Genero;
 use App\Models\Libro;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
@@ -26,7 +27,6 @@ class AdministradorController extends Controller
 
     /**
      * Inicia sesión al administrador.
-     *
      * @param  \Illuminate\Http\Request  $request
      * @return \Illuminate\Http\Response
      */
@@ -36,15 +36,12 @@ class AdministradorController extends Controller
         'email' => ['required', 'email'],
         'password' => ['required'],
     ]);
-
     $perfil = Perfil::where('email', $credentials['email'])->first();
-
     if (! $perfil || ! Hash::check($credentials['password'], $perfil->password)) {
         return back()->withErrors([
             'email' => 'Las credenciales proporcionadas no son válidas.',
         ]);
     }
-
     $admin = $perfil->administrador;
 
     if (! $admin) {
@@ -57,8 +54,6 @@ class AdministradorController extends Controller
 
     return redirect()->route('administradores.panelControl');
 }
-    
-
     /**
      * Cierra sesión del administrador.
      *
@@ -78,48 +73,34 @@ class AdministradorController extends Controller
     
     public function panelControl()
     {
-       // Verifica si hay un valor almacenado en la sesión para la pestaña actual
+        // Verifica si hay un valor almacenado en la sesión para la pestaña actual
         // Si no hay un valor almacenado, establece la pestaña por defecto en 'libros'
         if (!session('tab')) {
             session()->put('tab', 'libros');
         }
-
         $perfil = Auth::guard('administradores')->user();
-        // $nombre = $administrador->perfil->name;
-        // dd($nombre);
-        // return view('auth.administradores_panelControl', compact('nombre'));
+       
         $libros= $this->mostrarLibros();
         $autoresSinCuenta= $this->mostrarAutorSinCuenta();
         $solicitudesLibros= $this->solicitudAlta();
         $solicitudesAutores= $this->solicitudLibro();
         $editoriales= Editorial::all();
+        $generos=Genero::all();
         
-
-
-        return view('auth.administradores_panelControl', compact('libros', 'editoriales', 'autoresSinCuenta','perfil'))->with('tab', 'libros');
-        
-
-
-        
+        return view('auth.administradores_panelControl', compact('libros', 'editoriales', 'autoresSinCuenta','generos','perfil'))->with('tab', 'libros');  
     }
-
 
     // Funcion que saca todos los Libros de la base de datos
     public function mostrarLibros(){
         if(Auth::guard('administradores')->user()){
             $libros= Libro::all();
             return $libros;
-            
         }
-            
-
     }
 
      // Funcion que saca modifica los datos de un Libro
      public function agregarLibro(Request $request)
      {
-        
-  
          $request->validate([
              'isbn' => 'required|string|unique:libros,isbn',
              'titulo' => 'required|string',
@@ -128,6 +109,7 @@ class AdministradorController extends Controller
              'fechaPublicacion' => 'required|date',
              'editorial' => 'required|integer',
              'numeroPaginas'=>'required|integer|min:1',
+             'generos' => 'required|array|min:1',
          ]);
      
          $autores = explode(',', $request->autores);
@@ -147,12 +129,9 @@ class AdministradorController extends Controller
          }
 
          if (empty($autores_validos)) {
-            return redirect()->back()->with(['error-libros' => 'No se encontraron autores válidos en la base de datos.'])->withInput()->with('tab', 'libros');;
+            return redirect()->back()->with(['error-libros' => 'No se encontraron autores válidos en la base de datos.'])->withInput()->with('tab', 'libros');
         }
-         
-     
-        //  dd( $autores_validos );
-
+        
          $libro = new Libro();
          $libro->isbn = $request->input('isbn');
          $libro->titulo = $request->input('titulo');
@@ -160,17 +139,21 @@ class AdministradorController extends Controller
          $libro->fecha_publicacion = $request->input('fechaPublicacion');
          $libro->editorial_id = $request->input('editorial');
          $libro->numero_paginas = $request->input('numeroPaginas');
+
          $libro->save();
-     
-         // Agregar los autores a la tabla de pivote
+
          $libro->autorSinCuenta()->attach($autores_validos);
-     
+         $generos = $request->input('generos');
+         foreach ($generos as $genero) {
+            $libro->generos()->attach($genero, ['libro_id' => $libro->id]);
+        }
+        
          return redirect()->back()->with('success-libros', 'Libro agregado correctamente')->with('tab', 'libros');;
      }
 
+
     public function actualizar(Request $request, $accion)
     {
-        // dd($request);
         if ($accion == 'bloque') {
             $libros_seleccionados = $request->input('libros_seleccionados');
             $libros_seleccionados_array = explode(',', $libros_seleccionados[0]);
@@ -179,14 +162,14 @@ class AdministradorController extends Controller
                 if(!$id_libro){
                     return redirect()->back()->with('error-libros', 'Selecciona algún libro')->with('tab', 'libros');
                 }else{
-                    // dd($id_libro);
+                    // dd($datos_libros);
                     $this->actualizarBloque( $libros_seleccionados_array,  $datos_libros);
                 }
             }
             return redirect()->back()->with('success-libros', 'Los libros seleccionados han sido actualizados con exito.')->with('tab', 'libros');
         } else if ($accion == 'libro') {
             $this->actualizarLibro($request, $request->id);
-            return redirect()->back()->with('tab', 'libros');
+            return redirect()->route('administradores.panelControl')->with('success-libros', 'El libro se ha actualizado correctamente')->with('tab', 'libros');
         }
     }
 
@@ -203,9 +186,8 @@ class AdministradorController extends Controller
             $fechaPublicacion = $request->input('fechaPublicacion');
             $editorial = $request->input('editorial');
             $numeroPaginas = $request->input('numeroPaginas');
-
+        
             // Validar que los campos requeridos estén presentes y tengan un formato válido
-            // dd($datos_libro);
             $request->validate([
                 'isbn' => 'required|unique:libros,isbn,'.$id.'|max:255',
                 'titulo' => 'required|max:255',
@@ -214,6 +196,8 @@ class AdministradorController extends Controller
                 'editorial' => 'required',
                 'autores' => 'required',
                 'numeroPaginas'=>'required|integer|min:1',
+                'generos' => 'required|array|min:1',
+
             ], [
                 'isbn.required' => 'El campo ISBN es obligatorio',
                 'isbn.unique' => 'El ISBN ya existe en la base de datos',
@@ -227,32 +211,33 @@ class AdministradorController extends Controller
                 'fechaPublicacion.date' => 'El campo Fecha de publicación debe ser una fecha válida',
                 'editorial.required' => 'El campo Editorial es obligatorio',
                 'autores.required' => 'El campo Autores es obligatorio',
-                'numeroPaginas.required' => 'El campo páginas es obligatorio'
+                'numeroPaginas.required' => 'El campo páginas es obligatorio',
+                'generos.required' => 'Selecciona algún genero',
             ]);
 
-                // Analizar los autores ingresados por el usuario
+            // Analizar los autores ingresados por el usuario
             $autores = explode(',', $autores);
             $autores_validos = [];
-           
-            foreach ($autores as $autor) {
-                $nombres = explode(' ', trim($autor));
-                $nombre_autor = end($nombres);
-                array_pop($nombres);
-                $apellido_autor = implode(' ', $nombres);
-
-               
-
-                // Buscar el autor por nombre y apellido y validar su existencia
-                $autor = Autor_Sin_Cuenta::where('nombre', $nombre_autor)->where('apellidos', $apellido_autor)->first();
-                if ($autor) {
-                    $autores_validos[] = $autor->id;
-                }
-
-                if (empty($autores_validos)) {
-                    return redirect()->back()->with(['error-libros' => 'No se encontraron autores válidos en la base de datos.'])->withInput()->with('tab', 'libros');
+                
+            foreach ($autores as $nombre_completo) {
+                $nombre_completo = trim($nombre_completo);
+                // Reemplazar las comas en el nombre completo por espacios
+                $nombre_completo_sin_comas = str_replace(',', ' ', $nombre_completo);
+                // Buscar el autor por nombre completo y validar su existencia
+                $autor_valido = Autor_Sin_Cuenta::whereRaw("CONCAT(nombre, ' ', apellidos) = '". $nombre_completo_sin_comas ."'")->first();
+                if ($autor_valido) {
+                    $autores_validos[] = $autor_valido->id;
+                } else{
+                    return redirect()->back()->with(['error-libros' => 'Uno de los autores no se encuentra en la base de datos.'])->withInput()->with('tab', 'libros');
                 }
             }
-          
+
+            // dd($autores_validos);
+                
+            if (empty($autores_validos)) {
+                return redirect()->back()->with(['error-libros' => 'No se encontraron autores válidos en la base de datos.'])->withInput()->with('tab', 'libros');
+            }
+
             // Actualizar los datos del libro en la base de datos
             $libro->isbn = $isbn;
             $libro->titulo = $titulo;
@@ -261,14 +246,10 @@ class AdministradorController extends Controller
             $libro->editorial_id = $editorial;
             $libro->autorSinCuenta()->sync($autores_validos);
             $libro->numero_paginas = $numeroPaginas;
+            $libro->generos()->sync($request->generos);
            
             $libro->save();
-
-            return redirect()->route('administradores.panelControl')->with('success-libros', 'El libro se ha actualizado correctamente')->with('tab', 'libros');
         }
-
-
-
     
     public function actualizarBloque($libros_seleccionados_array, $datos_libros)
     {
@@ -277,13 +258,11 @@ class AdministradorController extends Controller
                 return redirect()->back()->with('error-libros', 'Selecciona algún libro');
             }else{
                 $nueva_request = new Request($datos_libros[$key]);
-        
+                
                 $this->actualizarLibro($nueva_request, $id_libro);
-                return redirect()->back()->with('success-libros', 'Los libros seleccionados han sido actualizados.')->with('tab', 'libros');
+                // return redirect()->back()->with('success-libros', 'Los libros seleccionados han sido actualizados.')->with('tab', 'libros');
             }
-           
-        }
-            
+        }      
    }
     
         // Funcion que borra un Libro
@@ -297,7 +276,6 @@ class AdministradorController extends Controller
     
     public function eliminar(Request $request,$accion)
     {
-        
         if ($accion == 'bloque') {
             $libros_seleccionados = $request->input('libros_seleccionados');
             $libros_seleccionados_array = explode(',', $libros_seleccionados[0]);
@@ -321,6 +299,8 @@ class AdministradorController extends Controller
 
 
 
+
+
       // Funcion que muestra a los datos de todos los autores sin cuenta registrados
       public function mostrarAutorSinCuenta(){
         if(Auth::guard('administradores')->user()){
@@ -328,7 +308,6 @@ class AdministradorController extends Controller
             return $autoresSinCuenta;
         }
     }
-
 
    // Funcion que registra en la base de datos a un autor sin cuenta registrada
     public function agregarAutorSinCuenta(Request $request){
@@ -342,104 +321,83 @@ class AdministradorController extends Controller
             $autor->apellidos = $request->input('apellidos');
             $autor->save();
             return redirect()->back()->with('success-autores', 'Autor sin cuenta agregado correctamente')->with('tab', 'autores');
-            // return redirect()->back()->with('success', 'Autor sin cuenta agregado correctamente');
         }
-
 
     // Funcion que borra de la base de datos a un autor sin cuenta
     public function eliminarAutorSinCuenta(Request $request,$accion){
-        
-        // dd($request , $accion);
         if ($accion == 'bloque') {
             $autoresSinCuenta_seleccionados = $request->input('autoresSinCuenta_seleccionados');
+           
             $autoresSinCuenta_seleccionados_array = explode(',', $autoresSinCuenta_seleccionados[0]);
+           
             $datos_autoresSinCuenta = json_decode($request->input('datos_autoresSinCuenta'), true);
             foreach ($autoresSinCuenta_seleccionados_array as $id_autorSinCuenta) {
+                
                 if(!$id_autorSinCuenta){
-                    return redirect()->back()->with('error-autores', 'Selecciona algún libro');
+                    return redirect()->back()->with('error-autores', 'Selecciona algún autor')->with('tab', 'autores');;
                 }else{
-                    // dd($id_autorSinCuenta);
-                    $this->eliminarAutorSinCuentaId($request, $request->id);
+                    // dd($request, $request->id);
+                    $this->eliminarAutorSinCuentaId($request->id);
                 }
             }
-            return redirect()->back()->with('success-autores', 'Los libros seleccionados han sido actualizados con exito.')->with('tab', 'libros');
+            return redirect()->back()->with('success-autores', 'Los libros seleccionados han sido actualizados con exito.')->with('tab', 'autores');
         } else if ($accion == 'autor') {
             $this->eliminarAutorSinCuentaId($request->id);
             return redirect()->back()->with('success-autores', 'El autor ha sido actualizado.')->with('tab', 'autores');
         }
-
-
-
-
     }
 
     public function eliminarAutorSinCuentaId ($id){
-        // dd($id);
         $autores = Autor_Sin_Cuenta::findOrFail($id);
         $autores->delete();
-
-        // return redirect()->back()->with('success-autores', 'Libro eliminado correctamente')->with('tab', 'autores');
-
     }
-
-
 
     public function actualizarAutorSinCuenta(Request $request, $accion)
     {
-        // dd($request , $accion);
         if ($accion == 'bloque') {
             $autoresSinCuenta_seleccionados = $request->input('autoresSinCuenta_seleccionados');
             $autoresSinCuenta_seleccionados_array = explode(',', $autoresSinCuenta_seleccionados[0]);
             $datos_autoresSinCuenta = json_decode($request->input('datos_autoresSinCuenta'), true);
             foreach ($autoresSinCuenta_seleccionados_array as $id_autorSinCuenta) {
                 if(!$id_autorSinCuenta){
-                    return redirect()->back()->with('error-autores', 'Selecciona algún libro');
+                    return redirect()->back()->with('error-autores', 'Selecciona algún autor')->with('tab', 'autores');;
                 }else{
                     // dd($id_autorSinCuenta);
                     $this->actualizarAutorSinCuentaBloque( $autoresSinCuenta_seleccionados_array,  $datos_autoresSinCuenta);
                 }
             }
-            return redirect()->back()->with('success-autores', 'Los libros seleccionados han sido actualizados con exito.')->with('tab', 'libros');
-        } else if ($accion == 'libro') {
-            // $this->actualizarLibro($request, $request->id);
-            return redirect()->back()->with('success-autores', 'El autor ha sido actualizado.')->with('tab', 'libros');
+            return redirect()->back()->with('success-autores', 'Los autores seleccionados han sido actualizados con exito.')->with('tab', 'autores');
+        } else if ($accion == 'autor') {
+            $this->actualizarAutorSinCuentaInd($request, $request->id);
+            return redirect()->back()->with('success-autores', 'El autor ha sido actualizado.')->with('tab', 'autores');
         }
     }
-
-
-
-
     
     public function actualizarAutorSinCuentaBloque($autoresSinCuenta_seleccionados_array, $datos_AutoresSinCuenta)
     {
-        // dd("Aqui si");
         foreach ($autoresSinCuenta_seleccionados_array as $key => $id_autor) {
             if(!$id_autor){
-                return redirect()->back()->with('error-autores', 'Selecciona algún libro');
+                return redirect()->back()->with('error-autores', 'Selecciona algún autor')->with('tab', 'autores');;
             }else{
                 $nueva_request = new Request($datos_AutoresSinCuenta[$key]);
         
                 $this->actualizarAutorSinCuentaInd($nueva_request, $id_autor);
 
-                return redirect()->back()->with('success-autores', 'Los libros seleccionados han sido actualizados.')->with('tab', 'libros');
+                return redirect()->back()->with('success-autores', 'Los autores seleccionados han sido actualizados.')->with('tab', 'autores');
             }
-           
         }
-            
    }
 
     // Funcion que modifica alguno de los datos de los autores sin cuenta
     public function actualizarAutorSinCuentaInd(Request $request, $id){
-        // dd("ActualizarIndividual");
          // Obtener el autor sin cuenta a actualizar
         $autor = Autor_Sin_Cuenta::findOrFail($id);
-      
+     
        // Obtener los datos del formulario
        $nombre = $request->input('nombre');
        $apellidos =$request->input('apellidos');
 
        // Validar que los campos requeridos estén presentes y tengan un formato válido
-       // dd($datos_autor);
        $request->validate([
             'nombre' => 'required|max:60',
             'apellidos' => 'required|max:120',
@@ -456,7 +414,7 @@ class AdministradorController extends Controller
       
        $autor->save();
 
-       return redirect()->route('administradores.panelControl')->with('success-autores', 'El autor se ha actualizado correctamente')->with('tab', 'libros');
+       return redirect()->route('administradores.panelControl')->with('success-autores', 'El autor se ha actualizado correctamente')->with('tab', 'autores');
 
 
     }
@@ -464,6 +422,246 @@ class AdministradorController extends Controller
 
 
 
+
+
+
+
+
+
+
+ 
+      // Funcion que muestra a los datos de todas las editoriales registrados
+    public function mostrarEditorial(){
+        if(Auth::guard('administradores')->user()){
+            $editorial= Editorial::all();
+            return $editorial;
+        }
+    }
+
+   // Funcion que registra editoriales en la base de datos
+    public function agregarEditorial(Request $request){
+            $request->validate([
+                'nombre' => 'required|string'
+            ]);
+
+            $editorial = new Editorial();
+            $editorial->nombre = $request->input('nombre');
+            $editorial->save();
+            return redirect()->back()->with('success-editorial', 'Editorial agregada correctamente')->with('tab', 'editoriales');
+    }
+
+
+    // Funcion que borra de la base de datos las editoriales
+    public function eliminarEditorial(Request $request,$accion){
+        // dd($request , $accion);
+        if ($accion == 'bloque') {
+            $editoriales_seleccionados = $request->input('editoriales_seleccionados');
+           
+            $editoriales_seleccionados_array = explode(',', $editoriales_seleccionados[0]);
+           
+            // $datos_editoriales = json_decode($request->input('datos_editoriales'), true);
+            foreach ($editoriales_seleccionados_array as $id_editorial) {
+                
+                if(!$id_editorial){
+                    return redirect()->back()->with('error-editoriales', 'Selecciona alguna editorial')->with('tab', 'editoriales');;
+                }else{
+                    // dd($request, $request->id);
+                    $this->eliminarEditorialId($request->id);
+                }
+            }
+            return redirect()->back()->with('success-editoriales', 'Los libros seleccionados han sido actualizados con exito.')->with('tab', 'editoriales');
+        } else if ($accion == 'editorial') {
+            $this->eliminarEditorialId($request->id);
+            return redirect()->back()->with('success-editoriales', 'La editorial ha sido actualizado.')->with('tab', 'editoriales');
+        }
+    }
+
+    public function eliminarEditorialId ($id){
+        $editoriales = Editorial::findOrFail($id);
+        $editoriales->delete();
+    }
+
+
+    public function actualizarEditorial(Request $request, $accion)
+    {
+        // dd($request , $accion);
+        if ($accion == 'bloque') {
+            $editoriales_seleccionados = $request->input('editoriales_seleccionados');
+            // dd( $editoriales_seleccionados);
+            $editoriales_seleccionados_array = explode(',', $editoriales_seleccionados[0]);
+            $datos_editoriales = json_decode($request->input('datos_editoriales'), true);
+            foreach ($editoriales_seleccionados_array as $id_edirorial) {
+                if(!$id_edirorial){
+                    return redirect()->back()->with('error-editoriales', 'Selecciona alguna editorial')->with('tab', 'editoriales');;
+                }else{
+                    $this->actualizarEditorialBloque( $editoriales_seleccionados_array,  $datos_editoriales);
+                }
+            }
+            return redirect()->back()->with('success-editoriales', 'Los editoriales seleccionados han sido actualizados con exito.')->with('tab', 'editoriales');
+        } else if ($accion == 'editorial') {
+            $this->actualizarEditorialInd($request, $request->id);
+            return redirect()->back()->with('success-editoriales', 'La editorial ha sido actualizado.')->with('tab', 'editoriales');
+        }
+    }
+    
+    public function actualizarEditorialBloque($editoriales_seleccionados_array, $datos_editoriales)
+    {
+        foreach ($editoriales_seleccionados_array as $key => $id_editorial) {
+            if(!$id_editorial){
+                return redirect()->back()->with('error-editoriales', 'Selecciona alguna editorial')->with('tab', 'editoriales');;
+            }else{
+                $nueva_request = new Request($datos_editoriales[$key]);
+        
+                $this->actualizarEditorialInd($nueva_request, $id_editorial);
+
+                // return redirect()->back()->with('success-editoriales', 'Los editoriales seleccionados han sido actualizados.')->with('tab', 'editoriales');
+            }
+        }
+   }
+
+    // Funcion que modifica alguno de los datos de los editoriales sin cuenta
+    public function actualizarEditorialInd(Request $request, $id){
+         // Obtener el editorial sin cuenta a actualizar
+        $editorial = Editorial::findOrFail($id);
+       // Obtener los datos del formulario
+       $nombre = $request->input('nombre');
+       // Validar que los campos requeridos estén presentes y tengan un formato válido
+       $request->validate([
+            'nombre' => 'required|max:60',
+       ], [
+           'nombre.required' => 'El campo nombre es obligatorio',
+           'nombre.max' => 'El campo nombre debe tener como máximo 60 caracteres',
+       ]);
+
+       // Actualizar los datos de la editorial en la base de datos
+       $editorial->nombre = $nombre;
+      
+       $editorial->save();
+    }
+
+
+
+
+
+
+
+
+
+
+
+ 
+      // Funcion que muestra a los datos de todas las editoriales registrados
+      public function mostrarGenero(){
+        if(Auth::guard('administradores')->user()){
+            $genero= Genero::all();
+            return $genero;
+        }
+    }
+
+   // Funcion que registra generos en la base de datos
+    public function agregarGenero(Request $request){
+            $request->validate([
+                'nombre' => 'required|string'
+            ]);
+
+            $genero = new Genero();
+            $genero->nombre = $request->input('nombre');
+            $genero->save();
+            return redirect()->back()->with('success-genero', 'Genero agregada correctamente')->with('tab', 'generos');
+    }
+
+
+    // Funcion que borra de la base de datos las generos
+    public function eliminarGenero(Request $request,$accion){
+        // dd($request , $accion);
+        if ($accion == 'bloque') {
+            $generos_seleccionados = $request->input('generos_seleccionados');
+           
+            $generos_seleccionados_array = explode(',', $generos_seleccionados[0]);
+           
+            // $datos_generos = json_decode($request->input('datos_generos'), true);
+            foreach ($generos_seleccionados_array as $id_genero) {
+                
+                if(!$id_genero){
+                    return redirect()->back()->with('error-generos', 'Selecciona alguna genero')->with('tab', 'generos');;
+                }else{
+                    // dd($request, $request->id);
+                    $this->eliminarGeneroId($request->id);
+                }
+            }
+            return redirect()->back()->with('success-generos', 'Los libros seleccionados han sido actualizados con exito.')->with('tab', 'generos');
+        } else if ($accion == 'genero') {
+            $this->eliminarGeneroId($request->id);
+            return redirect()->back()->with('success-generos', 'La genero ha sido actualizado.')->with('tab', 'generos');
+        }
+    }
+
+    public function eliminarGeneroId ($id){
+        $generos = Genero::findOrFail($id);
+        $generos->delete();
+    }
+
+
+    public function actualizarGenero(Request $request, $accion)
+    {
+        // dd($request , $accion);
+        if ($accion == 'bloque') {
+            $generos_seleccionados = $request->input('generos_seleccionados');
+            // dd( $generos_seleccionados);
+            $generos_seleccionados_array = explode(',', $generos_seleccionados[0]);
+            $datos_generos = json_decode($request->input('datos_generos'), true);
+            foreach ($generos_seleccionados_array as $id_edirorial) {
+                if(!$id_edirorial){
+                    return redirect()->back()->with('error-generos', 'Selecciona alguna genero')->with('tab', 'generos');;
+                }else{
+                    $this->actualizarGeneroBloque( $generos_seleccionados_array,  $datos_generos);
+                }
+            }
+            return redirect()->back()->with('success-generos', 'Los generos seleccionados han sido actualizados con exito.')->with('tab', 'generos');
+        } else if ($accion == 'genero') {
+            $this->actualizarGeneroInd($request, $request->id);
+            return redirect()->back()->with('success-generos', 'La genero ha sido actualizado.')->with('tab', 'generos');
+        }
+    }
+    
+    public function actualizarGeneroBloque($generos_seleccionados_array, $datos_generos)
+    {
+        foreach ($generos_seleccionados_array as $key => $id_genero) {
+            if(!$id_genero){
+                return redirect()->back()->with('error-generos', 'Selecciona alguna genero')->with('tab', 'generos');;
+            }else{
+                $nueva_request = new Request($datos_generos[$key]);
+        
+                $this->actualizarGeneroInd($nueva_request, $id_genero);
+
+                // return redirect()->back()->with('success-generos', 'Los generos seleccionados han sido actualizados.')->with('tab', 'generos');
+            }
+        }
+   }
+
+    // Funcion que modifica alguno de los datos de los generos sin cuenta
+    public function actualizarGeneroInd(Request $request, $id){
+         // Obtener el genero sin cuenta a actualizar
+        $genero = Genero::findOrFail($id);
+    
+     
+       // Obtener los datos del formulario
+       $nombre = $request->input('nombre');
+
+       // Validar que los campos requeridos estén presentes y tengan un formato válido
+       // dd($datos_genero);
+       $request->validate([
+            'nombre' => 'required|max:60',
+       ], [
+           'nombre.required' => 'El campo nombre es obligatorio',
+           'nombre.max' => 'El campo nombre debe tener como máximo 60 caracteres',
+       ]);
+
+       // Actualizar los datos de la genero en la base de datos
+       $genero->nombre = $nombre;
+      
+       $genero->save();
+    }
 
 
 

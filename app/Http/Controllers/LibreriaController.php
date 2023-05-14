@@ -104,31 +104,6 @@ class LibreriaController extends Controller
     
 
 
-    // public function agregarLibroALibreria(Request $req)
-    // {
-    //     $lectorId = Auth::guard('lector')->user()->id;
-    //     $libroId=$req->libro_id;
-    //     $libreriaId=$req->libreria_id;
-        
-    //     //Si ya hay una ficha de lectura para un usuario de un libro, no se crea otra-
-    //     $existeLectura = Lectura::where('libro_id', $libroId)
-    //                                 ->where('lector_id', $lectorId)
-    //                                 ->exists();
-    //     if ($existeLectura) {
-    //         return redirect()->back()->with('error', 'Ya existe una librería con este nombre');
-    //     }
-
-    //     $lectura = new Lectura;
-    //     $lectura->libro_id = $lectorId;
-    //     $lectura->lector_id = $lectorId;
-    //     $lectura->libreria_id = $libreriaId;
-    //     $lectura->save();
-        
-    //     // Agregar el libro a la librería y guardar los cambios en la base de datos.
-    //     // $libreria->lecturas->attach($libro);
-        
-    //     return redirect()->back()->with('success', 'Libro agregado a la librería con éxito.');
-    // }
     
 
     public function eliminarLibroDeLibreria($libreriaId, $libroId)

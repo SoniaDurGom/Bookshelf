@@ -19,10 +19,7 @@ class RetoController extends Controller
         if ($reto->completado) {
             Session::flash('success', '¡Felicitaciones! Has completado el reto de lectura.');
         }
-
         return view('reto.index', compact('perfil', 'reto','totalPaginasLeidas'));
-        
-    
     }
 
 
@@ -40,41 +37,9 @@ class RetoController extends Controller
                 'completado' => false,
             ]);
         }
-    
         return $reto;
     }
     
-
-    // public function actualizarReto(Request $request)
-    // {
-    //     $perfil = Auth::guard('lector')->user();
-    //     $reto = $perfil->retoActual();
-
-    //     $reto->update([
-    //         'libros_objetivo' => $request->libros_objetivo,
-    //     ]);
-
-    //     return view('reto.index', compact('libros', 'perfil'));
-        
-    
-    // }
-
-//     public function update(Request $request, Reto $reto)
-// {
-//     $request->validate([
-//         'libros_objetivo' => 'required|string|max:255',
-//         'completado' => 'required|boolean',
-//     ]);
-
-//     $reto->libros_objetivo = $request->libros_objetivo;
-//     $reto->completado = $request->completado;
-//     $reto->save();
-
-//     return redirect()->route('reto.mostrar', $reto->id);
-// }
-
-
-
     public function marcarObjetivo(Request $request)
     {
         $perfil = Auth::guard('lector')->user();
@@ -83,14 +48,12 @@ class RetoController extends Controller
         ]);
 
         $reto= $this->retoActual($perfil); //Saca el reto del lector
-    
         $reto->libros_objetivo = $validatedData['libros_objetivo'];
-   
         $reto->save();
 
         $this->actualizarProgresoReto();
 
-        return redirect()->route('reto.mostrar')->with('success', 'Reto actualizado'); //!Mostrar mensaje al uasuario
+        return redirect()->route('reto.mostrar')->with('success', 'Reto actualizado');
     }
 
 

@@ -10,6 +10,7 @@
                 <th>Fecha de publicación</th>
                 <th>Editorial</th>
                 <th>Páginas</th>
+                <th>Generos</th>
                 <th>Acciones</th>
             </tr>
         </thead>
@@ -32,8 +33,12 @@
                                 <td>
                                     <input type="text" name="titulo" value="{{$libro->titulo}}" required onblur="actualizarSeleccionados()" >
                                 </td>
+                            
                                 <td>
-                                    <input type="text" name="autores" required onblur="actualizarSeleccionados()" value="@foreach($libro->autorSinCuenta()->pluck('nombre', 'apellidos') as $nombre => $apellidos){{ $nombre }} {{ $apellidos }}@if(!$loop->last),@endif @endforeach">
+                                                                                                                        
+
+                                    <input type="text" name="autores" required onblur="actualizarSeleccionados()" value="@foreach($libro->autorSinCuenta()->pluck('apellidos', 'nombre') as $nombre => $apellidos){{ $nombre }} {{ $apellidos }}@if(!$loop->last),@endif @endforeach">
+                                    
                                 </td>
                                 <td>
                                     <input type="text" name="portada" value="{{$libro->portada}}" required onblur="actualizarSeleccionados()">
@@ -54,6 +59,29 @@
                                 <td>
                                     <input type="number" class="form-control" id="numeroPaginas" name="numeroPaginas" required min="1" value="{{$libro->numero_paginas}}" onblur="actualizarSeleccionados()">
                                 </td>
+
+                                <td>
+                                    <select name="generos[]" multiple onblur="actualizarSeleccionados()">
+                                      @foreach($generos as $genero)
+                                        <option value="{{ $genero->id }}" {{ in_array($genero->id, $libro->generos->pluck('id')->toArray()) ? 'selected' : '' }}>
+                                          {{ $genero->nombre }}
+                                        </option>
+                                      @endforeach
+                                    </select>
+                                </td>
+
+                                {{-- <td>
+                                    <select name="generos" onblur="actualizarSeleccionados()">
+                                      <option value="" selected>Seleccione géneros</option>
+                                      @foreach($generos as $genero)
+                                        <option value="{{ $genero->id }}" {{ $libro->generos->isNotEmpty() && $genero->id === $libro->generos->first()->id ? 'selected' : '' }}>
+                                          {{ $genero->nombre }}
+                                        </option>
+                                      @endforeach
+                                    </select>
+                                </td> --}}
+                                  
+                                  
                          
                                 <td>
                                     <input type="hidden" name="libro_data" value="" form="form-libro-{{$libro->id}}">
@@ -178,6 +206,14 @@
             var fechaPublicacion = fila.querySelector('input[name="fechaPublicacion"]').value;
             var editorial = fila.querySelector('select[name="editorial"]').value;
             var numeroPaginas = fila.querySelector('input[name="numeroPaginas"]').value;
+
+            var generosSelect = fila.querySelector('select[name="generos[]"]');
+            var generos = [];
+            for (var i = 0; i < generosSelect.selectedOptions.length; i++) {
+                generos.push(generosSelect.selectedOptions[i].value);
+            }
+
+            console.log( generos);
             
 
             datosLibros.push({
@@ -188,7 +224,8 @@
                 portada: portada,
                 fechaPublicacion:fechaPublicacion,
                 editorial:editorial,
-                numeroPaginas: numeroPaginas
+                numeroPaginas: numeroPaginas,
+                generos:generos
             });
         });
 
@@ -249,6 +286,21 @@
                         <label for="numeroPaginas" class="form-label">Numero de páginas</label>
                         <input type="number" class="form-control" id="numeroPaginas" name="numeroPaginas" required min="1">
                     </div>
+
+                    <div class="row row-cols-3 row-cols-md-6">
+                        <label for="generos" class="form-label">Géneros</label>
+                        @foreach($generos as $index => $genero)
+                            @if($index % 3 === 0)
+                                </div><div class="row row-cols-12 ">
+                            @endif
+                            <div class="col">
+                                <input type="checkbox" name="generos[]" value="{{ $genero->id }}">
+                                <label>{{ $genero->nombre }}</label>
+                            </div>
+                        @endforeach
+                    </div>
+                    
+                 
                 </div>
                 <div class="modal-footer">
                     <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cancelar</button>

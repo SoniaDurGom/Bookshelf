@@ -320,12 +320,194 @@ div.col {
 
 
 .card-img-top {
-  width: 100% ;
-  height:auto;
+  /* width: 100% ; */
+  height:100%;
   object-fit: cover;
   border-top-right-radius: 10px;
   border-bottom-right-radius: 10px;
 }
+
+
+
+.book-card__image {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+
+@media (min-width: 576px) {
+  .book-card__image {
+    height: 12em;
+  }
+}
+
+@media (min-width: 768px) {
+  .book-card__image {
+    height: 12em;
+  }
+}
+@media (min-width: 992px) {
+  .book-card__image {
+    height: 13em;
+  }
+}
+@media (min-width: 1200px) {
+  .book-card__image {
+    height: 15em;
+  }
+}
+
+@media (min-width: 1400px) {
+  .book-card__image {
+    height: 17em;
+  }
+}
+
+
+
+
+
+
+
+.book-card-ima-library {
+  width: 100%;
+  height: auto;
+  object-fit: cover;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+}
+
+/* @media (min-width: 300px) {
+  .book-card-ima-library {
+    height: 10em;
+  }
+}
+
+@media (min-width: 576px) {
+  .book-card-ima-library {
+    height: 13em;
+  }
+} */
+
+
+
+
+
+
+@media (max-width: 320px) {
+  .book-card-ima-library {
+    height: 10em;
+  }
+}
+
+@media (min-width: 320px) and (max-width: 350px) {
+  .book-card-ima-library {
+    height: 13em;
+  }
+}
+
+@media (min-width: 350px) and (max-width: 400px) {
+  .book-card-ima-library {
+    height: 15em;
+  }
+}
+
+
+@media (min-width: 400px) and (max-width: 476px) {
+  .book-card-ima-library {
+    height: 18em;
+  }
+}
+
+@media (min-width: 475px) and (max-width: 576px) {
+  .book-card-ima-library {
+    height: 22em;
+  }
+}
+
+
+
+@media (min-width: 576px) and (max-width: 591px) {
+  .book-card-ima-library {
+    height: 10em;
+  }
+}
+
+
+@media (min-width: 591px) and (max-width: 691px) {
+  .book-card-ima-library {
+    height: 13em;
+  }
+}
+
+@media (min-width: 691px) and (max-width: 791px) {
+  .book-card-ima-library {
+    height: 15em;
+  }
+}
+
+@media (min-width: 791px)  and (max-width: 891px){
+  .book-card-ima-library {
+    height: 18em;
+  }
+}
+
+
+@media (min-width: 891px)  and (max-width: 991px){
+  .book-card-ima-library {
+    height: 20em;
+  }
+}
+
+@media (min-width: 991px)  and (max-width: 1100px){
+  .book-card-ima-library {
+    height: 12em;
+  }
+}
+
+@media (min-width: 1100px)  and (max-width: 1200px){
+  .book-card-ima-library {
+    height: 13em;
+  }
+}
+
+@media (min-width: 1200px) and (max-width: 1300px) {
+  .book-card-ima-library {
+    height: 10em;
+  }
+}
+
+@media (min-width: 1300px) and (max-width: 1400px) {
+  .book-card-ima-library {
+    height: 12em;
+  }
+}
+
+@media (min-width: 1400px) {
+  .book-card-ima-library {
+    height: 13em;
+  }
+}
+
+@media (min-width: 1600px) {
+  .book-card-ima-library {
+    height: 15em;
+  }
+}
+
+@media (min-width: 1800px) {
+  .book-card-ima-library {
+    height: 17em;
+  }
+}
+
+
+
+
+
 
 .title-text{
   color:#00adb5;
@@ -444,7 +626,31 @@ div.col {
   font-size: 12px !important ;
 }
 
+@media (min-width: 750px){
+  .no-margin{
+    margin-top: 0px !important ;
+  }
+}
+
+
+
 /* #btnAñadirLibroAdmin{
   display: flex;
   justify-content: flex-end;
 } */
+
+
+select[name="generos[]"] {
+  max-height: 75px;
+}
+
+.home-txt{
+  /* color:#00adb5; */
+  font-weight: bolder;
+}
+
+
+  .container2{
+    max-width: calc(100% - 100px) !important;
+  }
+

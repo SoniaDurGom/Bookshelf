@@ -57,10 +57,16 @@
               </li>
             </ul>
 
-            <form class="d-flex" role="search">
-              <input class="form-control me-2" type="search" placeholder="Buscar..." aria-label="Search">
-              <button class="btn btn-outline-success " type="submit">Buscar</button>
+            <form class="d-flex" role="search" action="{{ route('buscar.libro') }}" method="POST">
+                @csrf
+                <input class="form-control me-2" type="search" name="query" placeholder="Buscar..." aria-label="Search">
+                <button class="btn btn-outline-success" type="submit">Buscar</button>
             </form>
+          
+     
+
+
+            
               <!-- Authentication Links -->
               @guest
               <ul class="navbar-nav d-flex flex-row">

@@ -2,15 +2,15 @@
 
 @section('content')
 
-<div class="container">
-    {{ Breadcrumbs::render('libros.novedades') }}
-    <h2 class="title-text"> </h2> 
+
+
+    <div class="container">
         <div class="card mb-4 ">
             <div class="card-header">
-                <h2>Novedades</h2> 
+                <h2>{{$librosBusqueda[0]->titulo}}</h2> 
             </div>
             <div class="card-body row ">
-                @foreach ($libros->shuffle()->take(50) as $libro)
+                @foreach ($librosBusqueda as $libro)
                     <div class="col-sm-4 col-md-3 col-lg-2 mb-3">
                         <div>
                             <img class="book-card__image" src="{{ $libro->portada }}" alt="{{ $libro->titulo }}">
@@ -26,9 +26,12 @@
             </div>
            
         </div>
+    
+     
 
-</div>
+    </div>
 
 
+    
 
 @endsection

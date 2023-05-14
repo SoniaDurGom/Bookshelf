@@ -10,11 +10,13 @@
                     <wbr>
                         <div>
                             {{--TODO: Despliega las librerias --}}
+                            {{-- !Si el libro no está añadido, btn-AñadirALibreria
+                                Si libro ya añadido a alguna, btn-actualizar libreria + btn borrarLibro --}}
                             <button class="btn btn-primary" onclick="mostrarSelect()">Añadir a libreria</button>
                             <br>
                             <br>
                             <div id="librerias-select" style="display: none;">
-                                <form id="libreria-form" method="POST" action="{{ route('libreria.agregarLibro') }}">
+                                <form id="libreria-form" method="POST" action="{{ route('libreria.agregarLibro') }}" onsubmit="return false;">
                                     @csrf
                                     <input type="hidden" name="libro_id" value="{{ $libro->id }}">
                                     <select id="select-librerias" name="libreria_id">
@@ -22,22 +24,26 @@
                                             <option value="{{ $libreria->id }}">{{ $libreria->nombre }}</option>
                                         @endforeach
                                     </select>
-                                    <button type="submit" class="btn btn-primary mx-3">Agregar libro</button>
+                                    <button type="button" class="btn btn-primary m-1" onclick="agregarLibro()"><i class="fa-solid fa-check"></i></button>
+                                    {{-- <button type="button" class="btn btn-danger m-1" onclick="borrarLibro({{$libro->id}})"><i class="fa-solid fa-xmark"></i></i></button> --}}
                                 </form>
                             </div> 
-                        
-                            {{-- !SACAR A SCRIPT --}}
+                            
                             <script>
                                 function mostrarSelect() {
                                     var selectDiv = document.getElementById("librerias-select");
                                     selectDiv.style.display = "block";
                                 }
-                        
-                                document.getElementById("select-librerias").addEventListener("change", function() {
+                            
+                                function agregarLibro() {
+                                    let formLibreria= document.getElementById("libreria-form");
+                                }
+
+                                function borrarLibro() {
                                     document.getElementById("libreria-form").submit();
-                                    document.getElementById("librerias-select").style.display = "none";
-                                });
+                                }
                             </script>
+                            
                         </div>
                         
                     
@@ -63,7 +69,7 @@
                                 @endforeach
                                 <br><br>
                                 <span>Edición: </span>
-                                <div class="m-4">
+                                <div class="m-2">
                                     <span class="card-text">Paginas: {{ $libro->numero_paginas }} </span>  <br>
                                     <span class="card-text">Fecha de publicacion: {{ $libro->fecha_publicacion}} </span> <br>
                                     <span class="card-text">ISBN: {{ $libro->isbn }}</span><br>
