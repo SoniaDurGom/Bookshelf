@@ -39,7 +39,10 @@ class HomeController extends Controller
         
         $lecturasLeyendo = $leyendo->lecturas()->inRandomOrder()->take(3)->get();
        
-        $pendientes = Libreria::where('nombre', 'Quiero Leer')->first();
+        $pendientes = Libreria::where('nombre', 'Quiero Leer')
+        ->where('lector_id', $perfil->id)
+        ->first();
+        
         $lecturasPendientes = $pendientes->lecturas()->inRandomOrder()->take(6)->get();
         
        

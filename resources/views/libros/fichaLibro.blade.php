@@ -24,7 +24,7 @@
                                             <option value="{{ $libreria->id }}">{{ $libreria->nombre }}</option>
                                         @endforeach
                                     </select>
-                                    <button type="button" class="btn btn-primary m-1" onclick="agregarLibro()"><i class="fa-solid fa-check"></i></button>
+                                    <button type="button" class="btn btn-primary m-1" onclick="agregarLibro({{$libro->id}})"><i class="fa-solid fa-check"></i></button>
                                     {{-- <button type="button" class="btn btn-danger m-1" onclick="borrarLibro({{$libro->id}})"><i class="fa-solid fa-xmark"></i></i></button> --}}
                                 </form>
                             </div> 
@@ -37,6 +37,7 @@
                             
                                 function agregarLibro() {
                                     let formLibreria= document.getElementById("libreria-form");
+                                    document.getElementById("libreria-form").submit();
                                 }
 
                                 function borrarLibro() {

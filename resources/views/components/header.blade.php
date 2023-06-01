@@ -52,7 +52,7 @@
                   <li><a class="dropdown-item dropdown-item-white disabled" href="#">Grupos</a></li>
                   <li><a class="dropdown-item dropdown-item-white disabled" href="#">Amigos</a></li>
                   <li><hr class="dropdown-divider"></li>
-                  <li><a class="dropdown-item dropdown-item-white" href="#">Autores</a></li>
+                  <li><a class="dropdown-item dropdown-item-white disabled" href="#">Autores</a></li>
                 </ul>
               </li>
             </ul>

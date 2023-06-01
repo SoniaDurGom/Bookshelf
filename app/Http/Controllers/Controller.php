@@ -44,11 +44,14 @@ class Controller extends BaseController
 
     public function buscar(Request $request)
     {
-        
         $perfil = Auth::guard('lector')->user();
         $query = $request->input('query');
         $librosBusqueda = Libro::where('titulo', 'LIKE', '%'.$query.'%')->get();
+        //!ALERT
+        // dd($librosBusqueda);
         return view('libros.busqueda', compact('librosBusqueda', 'perfil'));
+     
+       
     }
 
 }

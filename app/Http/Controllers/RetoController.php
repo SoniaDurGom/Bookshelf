@@ -25,8 +25,14 @@ class RetoController extends Controller
 
     public function retoActual($lector)
     {
+        //!AQUI
+        // dd($lector);
         $anio = date('Y');
-        $reto = $lector->reto->where('anio', $anio)->first();
+        $reto = $lector->reto
+        ->where('anio', $anio)
+        ->where('lector_id', $lector->id)->first();
+        // dd()
+        // dd($reto);
     
         if (!$reto) { //Si no existe un reto para el año actual se crea uno con el año actual
             $reto = $lector->reto->create([
@@ -43,13 +49,18 @@ class RetoController extends Controller
     public function marcarObjetivo(Request $request)
     {
         $perfil = Auth::guard('lector')->user();
+        
         $validatedData = $request->validate([
             'libros_objetivo' => 'required|integer|min:1',
         ]);
 
         $reto= $this->retoActual($perfil); //Saca el reto del lector
+      
+      
         $reto->libros_objetivo = $validatedData['libros_objetivo'];
         $reto->save();
+
+      
 
         $this->actualizarProgresoReto();
 
